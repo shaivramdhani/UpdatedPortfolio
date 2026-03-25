@@ -1,0 +1,40 @@
+---
+import { site } from "../data/site";
+
+const contactLinks = [
+  { label: "Email", href: `mailto:${site.email}`, value: site.email },
+  ...site.socialLinks
+    .filter((link) => link.label !== "Email")
+    .map((link) => ({ label: link.label, href: link.href, value: link.href.replace("https://", "") }))
+];
+---
+
+<section class="page-section">
+  <div class="site-shell">
+    <div class="surface grid gap-8 p-8 sm:p-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+      <div class="space-y-4">
+        <span class="technical-label">Contact</span>
+        <h2 class="text-3xl font-semibold tracking-tight text-slate-100 sm:text-4xl">
+          Looking for an engineer who can contribute clearly and own details end to end.
+        </h2>
+        <p class="max-w-2xl leading-8 text-slate-300">
+          If the work here looks aligned with your team, email is the best starting point. LinkedIn
+          and GitHub are here as supporting contact paths.
+        </p>
+      </div>
+      <div class="grid gap-3">
+        {contactLinks.map((link) => (
+          <a
+            href={link.href}
+            class="rounded-[1.5rem] border border-[color:var(--color-line)] bg-white/70 px-5 py-4 hover:border-accent"
+            target={link.href.startsWith("http") ? "_blank" : undefined}
+            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+          >
+            <span class="technical-label !text-[0.65rem]">{link.label}</span>
+            <p class="mt-2 text-base text-slate-200">{link.value}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

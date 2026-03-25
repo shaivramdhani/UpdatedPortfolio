@@ -1,0 +1,115 @@
+.pcb-intro {
+  --cursor-x: 74%;
+  --cursor-y: 34%;
+  background:
+    radial-gradient(circle at 50% -8%, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0) 36%),
+    radial-gradient(circle at 20% 14%, rgba(214, 239, 219, 0.92), rgba(214, 239, 219, 0) 26%),
+    linear-gradient(180deg, #edf5ef 0%, #dce9de 48%, #d1dfd2 100%);
+}
+
+.pcb-intro-canvas {
+  inset: clamp(0.75rem, 1.5vw, 1.4rem);
+}
+
+.pcb-intro-canvas canvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.pcb-intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 12%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(9, 16, 12, 0.08));
+}
+
+.pcb-intro-nav {
+  inset: clamp(0.75rem, 1.5vw, 1.4rem);
+}
+
+.pcb-intro-hitbox {
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(17, 43, 25, 0.05);
+  background: rgba(250, 252, 248, 0.015);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+}
+
+.pcb-intro-hitbox:hover,
+.pcb-intro-hitbox:focus-visible,
+.pcb-intro[data-hover-target="projects"] .pcb-intro-hitbox[data-nav-target="projects"],
+.pcb-intro[data-hover-target="experience"] .pcb-intro-hitbox[data-nav-target="experience"],
+.pcb-intro[data-hover-target="personal"] .pcb-intro-hitbox[data-nav-target="personal"],
+.pcb-intro[data-hover-target="about"] .pcb-intro-hitbox[data-nav-target="about"],
+.pcb-intro[data-hover-target="contact"] .pcb-intro-hitbox[data-nav-target="contact"] {
+  border-color: rgba(246, 251, 246, 0.82);
+  background: rgba(246, 251, 246, 0.11);
+  box-shadow:
+    inset 0 0 0 1px rgba(18, 43, 27, 0.18),
+    0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 0 8px rgba(47, 143, 82, 0.06);
+}
+
+.pcb-intro-hitbox:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(18, 43, 27, 0.18),
+    0 0 0 2px rgba(240, 248, 242, 0.88);
+  opacity: 1;
+}
+
+.pcb-intro-meta {
+  display: flex;
+  justify-content: center;
+}
+
+.pcb-intro-caption {
+  border-radius: 999px;
+  border: 1px solid rgba(26, 54, 36, 0.15);
+  background: rgba(244, 249, 245, 0.62);
+  color: rgba(17, 43, 25, 0.82);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  padding: 0.5rem 0.9rem;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .pcb-intro-nav {
+    inset: 0.35rem;
+  }
+
+  .pcb-intro-caption {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    padding: 0.45rem 0.78rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcb-intro-hitbox {
+    transition: none;
+  }
+
+  .pcb-intro::after {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(9, 16, 12, 0.08));
+  }
+}

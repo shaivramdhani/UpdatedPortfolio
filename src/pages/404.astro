@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Page Not Found | Shaiv Ramdhani">
+  <section class="py-24">
+    <div class="site-shell">
+      <div class="surface max-w-2xl space-y-5 p-8">
+        <span class="eyebrow">404</span>
+        <h1 class="text-4xl font-semibold text-slate-100">Page not found</h1>
+        <p class="leading-8 text-slate-300">
+          The page you tried to open does not exist. You can head back to the homepage or browse
+          the project list.
+        </p>
+        <div class="flex flex-col gap-3 sm:flex-row">
+          <a href="/" class="button-primary">Home</a>
+          <a href="/projects" class="button-secondary">Projects</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,46 @@
+---
+import SectionHeading from "../components/SectionHeading.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { personalSections } from "../data/personal";
+---
+
+<BaseLayout title="Personal | Shaiv Ramdhani">
+  <section class="page-section">
+    <div class="site-shell page-stack">
+      <div class="section-frame">
+        <SectionHeading
+          eyebrow="Personal"
+          title="A small amount of personal context that supports how I work."
+          description="This page is intentionally selective. The goal is to show the commitments that add useful context to my professional profile, not to turn the site into a personal journal."
+        />
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-2">
+        {personalSections.map((section) => (
+          <article class="surface space-y-5 p-7 sm:p-8">
+            <div class="space-y-3">
+              <div class="flex flex-wrap items-center gap-3">
+                <h2 class="text-2xl font-semibold tracking-tight text-slate-100">{section.title}</h2>
+                {section.placeholder && (
+                  <span class="rounded-full border border-[color:var(--color-line-strong)] bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    Placeholder
+                  </span>
+                )}
+              </div>
+              <p class="leading-8 text-slate-300">{section.summary}</p>
+            </div>
+
+            <ul class="space-y-3 text-slate-200">
+              {section.highlights.map((item) => (
+                <li class="flex gap-3 leading-7">
+                  <span class="mt-2 h-2 w-2 rounded-full bg-[color:var(--color-copper)]"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import ExperienceCard from "../components/ExperienceCard.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const experience = (await getCollection("experience")).sort(
+  (a, b) => Number(b.data.featured) - Number(a.data.featured) || b.data.timeframe.localeCompare(a.data.timeframe)
+);
+---
+
+<BaseLayout title="Experience | Shaiv Ramdhani">
+  <section class="page-section">
+    <div class="site-shell page-stack">
+      <div class="section-frame">
+        <SectionHeading
+          eyebrow="Experience"
+          title="Roles and teams that show how I work in practice."
+          description="These entries are intentionally short, scan-friendly, and grounded in contribution. The body content is Markdown so each role can stay easy to maintain."
+        />
+      </div>
+      <div class="space-y-6">
+        {experience.map((entry) => (
+          <ExperienceCard entry={entry} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

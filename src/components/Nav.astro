@@ -1,0 +1,31 @@
+---
+import { site } from "../data/site";
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-20 border-b border-[color:var(--color-line)] bg-white/74 backdrop-blur-xl">
+  <div class="site-shell flex items-center justify-between gap-4 py-4">
+    <a href="/" class="font-mono text-sm uppercase tracking-[0.26em] text-slate-100">
+      {site.name}
+    </a>
+    <nav class="flex flex-wrap items-center justify-end gap-3 sm:gap-4">
+      {site.navigation.map((item) => {
+        const active = pathname === item.href;
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              "rounded-full border px-3 py-2 text-sm font-medium transition-colors",
+              active
+                ? "border-accent/30 bg-accent/10 text-accent"
+                : "border-transparent text-slate-300 hover:border-[color:var(--color-line)] hover:bg-white/55 hover:text-slate-100"
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+</header>

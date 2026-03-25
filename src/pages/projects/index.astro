@@ -1,0 +1,27 @@
+---
+import { getCollection } from "astro:content";
+import ProjectCard from "../../components/ProjectCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+
+<BaseLayout title="Projects | Shaiv Ramdhani">
+  <section class="page-section">
+    <div class="site-shell page-stack">
+      <div class="section-frame">
+        <SectionHeading
+          eyebrow="Projects"
+          title="Technical work explained with enough detail to show real ownership."
+          description="The goal here is not to list everything. It is to give a hiring manager a credible picture of what you built, what constraints mattered, and what you personally contributed."
+        />
+      </div>
+      <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

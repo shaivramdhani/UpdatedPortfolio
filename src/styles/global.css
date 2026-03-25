@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Aptos", "Segoe UI Variable", "SF Pro Display", "Helvetica Neue", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", "SF Mono", monospace;
+  --color-ink-950: #0f2317;
+  --color-ink-900: #173222;
+  --color-ink-800: #214832;
+  --color-slate-100: #163223;
+  --color-slate-200: #244633;
+  --color-slate-300: #476550;
+  --color-slate-400: #6b8571;
+  --color-line: rgba(28, 63, 42, 0.12);
+  --color-line-strong: rgba(28, 63, 42, 0.22);
+  --color-accent: #2f8f52;
+  --color-accent-strong: #3fa466;
+  --color-copper: #b78f49;
+  --color-surface: rgba(252, 254, 251, 0.82);
+  --color-surface-strong: rgba(249, 252, 246, 0.92);
+  --color-mask-glow: rgba(79, 162, 102, 0.1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-ink-950 text-slate-100 antialiased;
+    font-family: var(--font-sans);
+    background-image:
+      radial-gradient(circle at top, rgba(103, 180, 116, 0.15), transparent 28%),
+      radial-gradient(circle at 85% 12%, rgba(183, 143, 73, 0.08), transparent 18%),
+      linear-gradient(180deg, #eff5ed 0%, #e7efe5 46%, #e3ece1 100%);
+  }
+
+  a {
+    @apply transition-colors duration-150;
+  }
+
+  ::selection {
+    background: rgba(47, 143, 82, 0.18);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, transparent 0 9%, rgba(58, 118, 76, 0.035) 9% 9.2%, transparent 9.2% 100%),
+      linear-gradient(180deg, transparent 0 24%, rgba(58, 118, 76, 0.03) 24% 24.2%, transparent 24.2% 100%),
+      radial-gradient(circle at 16% 78%, rgba(183, 143, 73, 0.06), transparent 10%);
+    opacity: 0.9;
+    z-index: -1;
+  }
+}
+
+@layer components {
+  .site-shell {
+    @apply mx-auto w-full max-w-6xl px-3 sm:px-4;
+  }
+
+  .site-main {
+    @apply relative;
+  }
+
+  .site-main::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-48;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent);
+  }
+
+  .page-section {
+    @apply py-16 sm:py-20;
+  }
+
+  .page-stack {
+    @apply space-y-10;
+  }
+
+  .surface {
+    @apply relative overflow-hidden rounded-[2rem] border border-[color:var(--color-line)] shadow-[0_24px_60px_rgba(16,35,23,0.08)];
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(247, 250, 245, 0.92)),
+      var(--color-surface);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      0 24px 60px rgba(16, 35, 23, 0.08);
+  }
+
+  .surface::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-6 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(183, 143, 73, 0.45), transparent);
+  }
+
+  .surface::after {
+    content: "";
+    @apply pointer-events-none absolute inset-0;
+    background:
+      radial-gradient(circle at 1.1rem 1.1rem, rgba(183, 143, 73, 0.2) 0 0.18rem, transparent 0.2rem),
+      linear-gradient(90deg, transparent calc(100% - 1rem), rgba(47, 143, 82, 0.04) calc(100% - 1rem), transparent 100%);
+    opacity: 0.6;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center rounded-full border border-[color:var(--color-line-strong)] bg-white/70 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-accent;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  .button-primary {
+    @apply inline-flex items-center justify-center rounded-full border border-accent bg-accent px-5 py-3 text-sm font-semibold text-white hover:bg-accent-strong;
+    box-shadow: 0 14px 30px rgba(47, 143, 82, 0.18);
+  }
+
+  .button-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-[color:var(--color-line-strong)] bg-white/60 px-5 py-3 text-sm font-semibold text-slate-100 hover:border-accent hover:text-accent;
+  }
+
+  .pill {
+    @apply rounded-full border border-[color:var(--color-line)] bg-white/70 px-3 py-1 text-sm text-slate-200;
+  }
+
+  .technical-label {
+    @apply inline-flex items-center gap-2 font-mono text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-slate-400;
+  }
+
+  .technical-label::before {
+    content: "";
+    @apply h-2 w-2 rounded-full;
+    background: rgba(183, 143, 73, 0.72);
+    box-shadow: 0 0 0 4px rgba(183, 143, 73, 0.12);
+  }
+
+  .section-frame {
+    @apply relative overflow-hidden rounded-[2rem] border border-[color:var(--color-line)] p-8 shadow-[0_24px_60px_rgba(16,35,23,0.08)] sm:p-10;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(247, 250, 245, 0.92)),
+      var(--color-surface);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.55),
+      0 24px 60px rgba(16, 35, 23, 0.08);
+  }
+
+  .section-frame::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-6 top-0 h-px;
+    background: linear-gradient(90deg, transparent, rgba(183, 143, 73, 0.45), transparent);
+  }
+
+  .section-frame::after {
+    content: "";
+    @apply pointer-events-none absolute inset-0;
+    background:
+      radial-gradient(circle at 1.1rem 1.1rem, rgba(183, 143, 73, 0.2) 0 0.18rem, transparent 0.2rem),
+      linear-gradient(90deg, transparent calc(100% - 1rem), rgba(47, 143, 82, 0.04) calc(100% - 1rem), transparent 100%);
+    opacity: 0.6;
+  }
+
+  .grid-trace {
+    @apply relative;
+  }
+
+  .grid-trace::before {
+    content: "";
+    @apply pointer-events-none absolute left-0 top-8 bottom-8 w-px;
+    background: linear-gradient(180deg, rgba(183, 143, 73, 0.38), rgba(47, 143, 82, 0.12), transparent);
+  }
+
+  .prose-content {
+    @apply space-y-5 text-[1.02rem] leading-8 text-slate-200;
+  }
+
+  .prose-content h2 {
+    @apply mt-10 text-2xl font-semibold text-slate-100;
+  }
+
+  .prose-content h3 {
+    @apply mt-8 text-xl font-semibold text-slate-100;
+  }
+
+  .prose-content p {
+    @apply text-slate-200;
+  }
+
+  .prose-content ul {
+    @apply ml-5 list-disc space-y-2 text-slate-200;
+  }
+
+  .prose-content a {
+    @apply text-accent underline-offset-4 hover:underline;
+  }
+}

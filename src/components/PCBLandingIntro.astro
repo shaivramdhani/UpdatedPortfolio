@@ -1,0 +1,131 @@
+---
+import "./PCBLandingIntro.css";
+
+const navigationTargets = [
+  {
+    id: "about",
+    label: "About",
+    href: "/about"
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    href: "/projects"
+  },
+  {
+    id: "experience",
+    label: "Experience",
+    href: "/experience"
+  },
+  {
+    id: "personal",
+    label: "Personal",
+    href: "/personal"
+  },
+  {
+    id: "contact",
+    label: "Contact",
+    href: "/contact"
+  }
+] as const;
+
+type Props = {
+  introDurationMs?: number;
+  flowSpeed?: number;
+  opacity?: number;
+  glowStrength?: number;
+};
+
+const {
+  introDurationMs = 4600,
+  flowSpeed = 1,
+  opacity = 0.98,
+  glowStrength = 1
+} = Astro.props;
+---
+
+<section
+  class="pcb-intro isolate relative min-h-[100svh] overflow-hidden"
+  data-pcb-intro
+  data-intro-duration={introDurationMs}
+  data-flow-speed={flowSpeed}
+  data-scene-opacity={opacity}
+  data-glow-strength={glowStrength}
+>
+  <div class="pcb-intro-canvas absolute inset-0" data-pcb-canvas aria-hidden="true"></div>
+
+  <nav class="pcb-intro-nav absolute inset-0 z-10" aria-label="Homepage sections">
+    {navigationTargets.map((target) => (
+      <a
+        href={target.href}
+        class="pcb-intro-hitbox"
+        data-nav-target={target.id}
+        aria-label={target.label}
+      >
+        <span class="sr-only">{target.label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="pcb-intro-meta pointer-events-none absolute inset-x-0 bottom-0 z-10 px-4 py-4 sm:px-6 sm:py-5">
+    <p class="pcb-intro-caption">Explore the board</p>
+  </div>
+
+  <script>
+    const roots = document.querySelectorAll("[data-pcb-intro]");
+
+    (async () => {
+      const { initPcbLandingScene } = await import("../lib/pcbLandingScene");
+
+      roots.forEach((root) => {
+        if (!(root instanceof HTMLElement)) return;
+
+        const canvasHost = root.querySelector("[data-pcb-canvas]");
+        if (!(canvasHost instanceof HTMLElement)) return;
+
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const mobile = window.matchMedia("(max-width: 900px)").matches;
+        const introDurationMs = Number(root.dataset.introDuration ?? 4600);
+        const navElements = Object.fromEntries(
+          Array.from(root.querySelectorAll("[data-nav-target]"))
+            .filter((element): element is HTMLAnchorElement => element instanceof HTMLAnchorElement)
+            .map((element) => [element.dataset.navTarget, element])
+        );
+        const controller = initPcbLandingScene(canvasHost, {
+          introDurationMs,
+          flowSpeed: Number(root.dataset.flowSpeed ?? 1),
+          sceneOpacity: Number(root.dataset.sceneOpacity ?? 0.98),
+          glowStrength: Number(root.dataset.glowStrength ?? 1),
+          reducedMotion: prefersReducedMotion,
+          mobile,
+          interactionTarget: root,
+          navElements,
+          onActiveTargetChange(targetId) {
+            if (targetId) {
+              root.setAttribute("data-hover-target", targetId);
+            } else {
+              root.removeAttribute("data-hover-target");
+            }
+          },
+          onPointerMove(pointer) {
+            root.style.setProperty("--cursor-x", `${(pointer.x * 100).toFixed(2)}%`);
+            root.style.setProperty("--cursor-y", `${(pointer.y * 100).toFixed(2)}%`);
+          }
+        });
+
+        if (prefersReducedMotion) {
+          root.setAttribute("data-reduced-motion", "true");
+        }
+
+        Object.values(navElements).forEach((link) => {
+          if (!(link instanceof HTMLAnchorElement)) return;
+          const targetId = link.dataset.navTarget;
+          if (!targetId) return;
+
+          link.addEventListener("focus", () => controller.setActiveNavTarget(targetId));
+          link.addEventListener("blur", () => controller.setActiveNavTarget(null));
+        });
+      });
+    })();
+  </script>
+</section>

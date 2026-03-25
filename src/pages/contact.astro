@@ -1,0 +1,70 @@
+---
+import ContactPanel from "../components/ContactPanel.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../data/site";
+
+const emailLink = site.socialLinks.find((link) => link.label === "Email");
+const profileLinks = site.socialLinks.filter((link) => link.label !== "Email");
+---
+
+<BaseLayout title="Contact | Shaiv Ramdhani">
+  <section class="page-section">
+    <div class="site-shell page-stack">
+      <div class="section-frame">
+        <SectionHeading
+          eyebrow="Contact"
+          title="A simple contact page, kept clear and direct."
+          description="If you would like to talk about internships, new grad opportunities, hardware work, or student team experience, the fastest path is email. LinkedIn and GitHub are included here as supporting channels."
+        />
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <article class="surface space-y-5 p-8">
+          <span class="technical-label">Primary Contact</span>
+          <div class="space-y-3">
+            <h2 class="text-2xl font-semibold tracking-tight text-slate-100">Email</h2>
+            <p class="leading-8 text-slate-300">
+              Email is the best option for recruiting conversations or project-related outreach.
+            </p>
+          </div>
+          <a href={`mailto:${site.email}`} class="button-primary">{site.email}</a>
+        </article>
+
+        <article class="surface space-y-5 p-8">
+          <span class="technical-label">Profiles</span>
+          <div class="grid gap-3">
+            {profileLinks.map((link) => (
+              <a
+                href={link.href}
+                class="rounded-[1.4rem] border border-[color:var(--color-line)] bg-white/70 px-5 py-4 hover:border-accent"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <p class="font-mono text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                  {link.label}
+                </p>
+                <p class="mt-2 text-base text-slate-200">{link.href.replace("https://", "")}</p>
+              </a>
+            ))}
+            {
+              emailLink && (
+                <a
+                  href={emailLink.href}
+                  class="rounded-[1.4rem] border border-[color:var(--color-line)] bg-white/70 px-5 py-4 hover:border-accent"
+                >
+                  <p class="font-mono text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Email Link
+                  </p>
+                  <p class="mt-2 text-base text-slate-200">{site.email}</p>
+                </a>
+              )
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <ContactPanel />
+</BaseLayout>

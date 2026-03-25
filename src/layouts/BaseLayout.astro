@@ -1,0 +1,58 @@
+---
+import { site } from "../data/site";
+import Nav from "../components/Nav.astro";
+import "../styles/global.css";
+
+type Props = {
+  title?: string;
+  description?: string;
+  hideNav?: boolean;
+};
+
+const {
+  title = `${site.name} | Portfolio`,
+  description = site.summary,
+  hideNav = false
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    {
+      site.placeholderContent && (
+        <div class="border-b border-[color:var(--color-line)] bg-accent/10 px-4 py-3 text-center text-sm text-slate-200">
+          Placeholder content is enabled. Replace sample project and experience entries before
+          publishing.
+        </div>
+      )
+    }
+    {hideNav ? null : <Nav />}
+    <main class="site-main">
+      <slot />
+    </main>
+    <footer class="border-t border-[color:var(--color-line)] bg-white/54 py-8 backdrop-blur">
+      <div class="site-shell flex flex-col gap-3 text-sm text-slate-400 md:flex-row md:items-center md:justify-between">
+        <p>{site.name}</p>
+        <div class="flex flex-wrap gap-4">
+          {site.socialLinks.map((link) => (
+            <a
+              href={link.href}
+              class="hover:text-accent"
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
