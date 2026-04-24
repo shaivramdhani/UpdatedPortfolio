@@ -7,13 +7,23 @@ type Props = {
   title?: string;
   description?: string;
   hideNav?: boolean;
+  ogType?: string;
+  ogUrl?: string;
+  ogImage?: string;
+  twitterCard?: string;
 };
 
 const {
-  title = `${site.name} | Portfolio`,
-  description = site.summary,
-  hideNav = false
+  title = site.seo.defaultTitle,
+  description = site.seo.defaultDescription,
+  hideNav = false,
+  ogType = "website",
+  ogUrl = site.seo.siteUrl,
+  ogImage = site.seo.ogImagePath,
+  twitterCard = "summary_large_image"
 } = Astro.props;
+
+const resolvedOgImage = ogImage.startsWith("http") ? ogImage : `${site.seo.siteUrl}${ogImage}`;
 ---
 
 <!doctype html>
@@ -21,7 +31,18 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href={site.seo.faviconPath} />
+    <link rel="apple-touch-icon" href={site.seo.faviconPath} />
     <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:image" content={resolvedOgImage} />
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={resolvedOgImage} />
     <title>{title}</title>
   </head>
   <body>

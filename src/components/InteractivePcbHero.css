@@ -144,22 +144,22 @@
 }
 
 .interactive-pcb-hero__label--top-left-block {
-  left: 35%;
-  top: 55%;
+  left: 32%;
+  top: 50%;
 }
 
 .interactive-pcb-hero__label--center-mcu {
-  left: 42%;
+  left: 50%;
   top: 55%;
 }
 
 .interactive-pcb-hero__label--bottom-left-cluster {
-  left: 50%;
-  top: 48%;
+  left: 55%;
+  top: 55%;
 }
 
 .interactive-pcb-hero__label--right-subsystem {
-  left: 45%;
+  left: 58%;
   top: 55%;
 }
 

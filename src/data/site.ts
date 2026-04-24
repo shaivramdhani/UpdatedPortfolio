@@ -1,11 +1,19 @@
 export const site = {
   name: "Shaiv Ramdhani",
   title: "Engineering Physics student focused on electrical hardware and PCB design.",
-headline:
-  "I’m an Engineering Physics student at the University of British Columbia focused on electrical hardware design, with an emphasis on PCB design and real-world system behavior.",
-summary:
-  "I am building toward electrical hardware and systems engineering through technical coursework and hands-on design work, including developing electrical systems for autonomous robots with UBC Thunderbots. My work focuses on designing systems that perform reliably under real-world constraints, where layout, parasitics, and physical effects directly impact performance.\n\nEngineering Physics combines electrical, mechanical, and software engineering with a strong foundation in physics and mathematics, allowing me to approach hardware design from first principles and better understand electromagnetic effects, signal integrity, and non-ideal behavior.\n\nI am particularly interested in PCB design, RF systems, low-power electronics, and high-voltage applications.",
-location: "Vancouver, BC",
+  headline:
+    "I’m an Engineering Physics student at the University of British Columbia focused on electrical hardware design, with an emphasis on PCB design and real-world system behavior.",
+  summary:
+    "I am building toward electrical hardware and systems engineering through technical coursework and hands-on design work, including developing electrical systems for autonomous robots with UBC Thunderbots. My work focuses on designing systems that perform reliably under real-world constraints, where layout, parasitics, and physical effects directly impact performance.\n\nEngineering Physics combines electrical, mechanical, and software engineering with a strong foundation in physics and mathematics, allowing me to approach hardware design from first principles and better understand electromagnetic effects, signal integrity, and non-ideal behavior.\n\nI am particularly interested in PCB design, RF systems, low-power electronics, and high-voltage applications.",
+  seo: {
+    defaultTitle: "Shaiv Ramdhani | Electrical Hardware & PCB Design",
+    defaultDescription:
+      "Engineering Physics student at UBC focused on electrical hardware, PCB design, RF systems, and autonomous robotics.",
+    siteUrl: "https://sramdhani.com",
+    faviconPath: "/favicon.png",
+    ogImagePath: "/og-image.png"
+  },
+  location: "Vancouver, BC",
   availability: "Open to electrical engineering internships",
   email: "shaiv.ramdhani@gmail.com",
   resume: {
