@@ -46,14 +46,6 @@ const resolvedOgImage = ogImage.startsWith("http") ? ogImage : `${site.seo.siteU
     <title>{title}</title>
   </head>
   <body>
-    {
-      site.placeholderContent && (
-        <div class="border-b border-[color:var(--color-line)] bg-accent/10 px-4 py-3 text-center text-sm text-slate-200">
-          Placeholder content is enabled. Replace sample project and experience entries before
-          publishing.
-        </div>
-      )
-    }
     {hideNav ? null : <Nav />}
     <main class="site-main">
       <slot />
