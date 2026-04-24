@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "eslint --no-warn-ignored src/content/config.ts src/data/site.ts src/data/personal.ts eslint.config.mjs astro.config.mjs"
+    "lint": "eslint --no-warn-ignored src/content/config.ts src/data/site.ts eslint.config.mjs astro.config.mjs"
   },
   "dependencies": {
     "astro": "^5.6.1",

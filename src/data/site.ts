@@ -6,20 +6,24 @@ export const site = {
   summary:
     "I am building toward electrical, embedded, and robotics engineering through technical coursework, practical hardware work, student team involvement with UBC Thunderbots, operations work at Student Energy UBC, and tutoring in Physics and Chemistry. That background is useful in environments that value strong fundamentals, careful implementation, and clear communication.",
   location: "Vancouver, BC",
-  availability: "Open to software engineering internships and new grad roles",
-  email: "hello@shaivramdhani.dev",
+  availability: "Open to electrical engineering internships",
+  email: "shaiv.ramdhani@gmail.com",
+  resume: {
+    label: "View Resume (Placeholder)",
+    href: "/resume/shaiv-ramdhani-resume-placeholder.txt",
+    placeholder: true
+  },
   placeholderContent: true,
   navigation: [
     { label: "About", href: "/about" },
     { label: "Projects", href: "/projects" },
     { label: "Experience", href: "/experience" },
-    { label: "Personal", href: "/personal" },
     { label: "Contact", href: "/contact" }
   ],
   socialLinks: [
     { label: "GitHub", href: "https://github.com/shaivramdhani" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/shaivramdhani" },
-    { label: "Email", href: "mailto:hello@shaivramdhani.dev" }
+    { label: "Email", href: "mailto:shaiv.ramdhani@gmail.com" }
   ],
   callsToAction: {
     primary: { label: "View Projects", href: "/projects" },

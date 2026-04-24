@@ -99,9 +99,29 @@ Edit `src/data/site.ts` to update:
 - location and availability
 - short professional summary
 - social links and call-to-action links
+- resume link metadata
 - placeholder banner state
 
 Set `placeholderContent` to `false` when the sample content is fully replaced.
+
+## Add Or Replace Resume
+
+The contact page reads resume data from `src/data/site.ts`:
+
+- `resume.href`
+- `resume.label`
+- `resume.placeholder`
+
+Current placeholder file:
+
+- `public/resume/shaiv-ramdhani-resume-placeholder.txt`
+
+To switch to your real resume PDF:
+
+1. Add your file to `public/resume/shaiv-ramdhani-resume.pdf`.
+2. Edit `src/data/site.ts` and set `resume.href` to `"/resume/shaiv-ramdhani-resume.pdf"`.
+3. Update `resume.label` to `Download Resume (PDF)`.
+4. Set `resume.placeholder` to `false`.
 
 ## Development
 

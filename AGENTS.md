@@ -73,3 +73,18 @@ Before finishing:
 - make sure the site is responsive
 - ensure placeholder content is clearly marked
 - do not leave dead code or unused scaffolding
+
+## PCB homepage style rules
+The homepage board should follow a clean top-down PCB illustration style similar to an EDA render.
+Prefer:
+- bright green solder mask
+- crisp pads, vias, and silkscreen
+- thin believable traces
+- realistic component scale and density
+- orthogonal / 45-degree routing
+Avoid:
+- soft toy-like 3D shading
+- decorative traces
+- oversized random components
+- floating UI elements disconnected from the board
+Preserve the main navigation ICs as hero components, but make the rest of the board feel legitimate.
