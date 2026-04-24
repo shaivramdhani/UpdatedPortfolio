@@ -1,6 +1,11 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site } from "../data/site";
+
+const summaryParagraphs = site.summary
+  .split("\n\n")
+  .map((paragraph) => paragraph.trim())
+  .filter(Boolean);
 ---
 
 <BaseLayout title="About | Shaiv Ramdhani">
@@ -14,14 +19,10 @@ import { site } from "../data/site";
           </h1>
           <p class="max-w-3xl text-lg leading-8 text-slate-300">{site.headline}</p>
         </div>
-
         <div class="max-w-3xl space-y-5 text-[1.02rem] leading-8 text-slate-200">
-          <p>{site.summary}</p>
-          <p>
-            This page is intentionally short. The goal is to make it clear what kind of engineer I
-            am becoming, what technical environments I work in, and why that background is useful
-            on a team.
-          </p>
+          {summaryParagraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
         </div>
       </article>
     </div>

@@ -1,0 +1,52 @@
+---
+import "./InteractivePcbHero.css";
+import { debugPcbHotspots, pcbHeroHotspots, pcbHeroImage } from "../data/homepagePcbHotspots";
+
+type Props = {
+  debugHotspots?: boolean;
+};
+
+const { debugHotspots = debugPcbHotspots } = Astro.props;
+---
+
+<section class="interactive-pcb-hero">
+  <div class="interactive-pcb-hero__viewport">
+    <div
+      class:list={["interactive-pcb-hero__board", debugHotspots && "interactive-pcb-hero__board--debug"]}
+      data-interactive-pcb-board
+    >
+      <img
+        src={pcbHeroImage.src}
+        alt="Printed circuit board hero image with interactive navigation regions."
+        class="interactive-pcb-hero__image"
+        loading="eager"
+        decoding="async"
+        width={pcbHeroImage.width}
+        height={pcbHeroImage.height}
+      />
+
+      <nav class="interactive-pcb-hero__hotspots" aria-label="Homepage sections">
+        {pcbHeroHotspots.map((hotspot) => (
+          <a
+            href={hotspot.href}
+            class="interactive-pcb-hero__hotspot"
+            aria-label={hotspot.label}
+            data-hotspot-id={hotspot.id}
+            style={`left:${hotspot.left};top:${hotspot.top};width:${hotspot.width};height:${hotspot.height};`}
+          >
+            <span class="sr-only">{hotspot.label}</span>
+            <span
+              class:list={[
+                "interactive-pcb-hero__label",
+                `interactive-pcb-hero__label--${hotspot.id}`
+              ]}
+              aria-hidden="true"
+            >
+              {hotspot.label}
+            </span>
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+</section>
