@@ -1,6 +1,6 @@
 ---
 organization: "Kruger Products"
-title: "Systems Engineering Intern (Reliability & Data Analysis)"
+title: "Mechatronics Reliability Engineer Intern "
 timeframe: "Jan 2026 - May 2026"
 location: "Vancouver, BC"
 featured: false
