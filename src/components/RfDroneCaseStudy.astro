@@ -1,0 +1,226 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EngineeringFlow from "./EngineeringFlow.astro";
+import ProjectFigure from "./ProjectFigure.astro";
+import ProjectLightbox from "./ProjectLightbox.astro";
+import { rfDroneProject as content } from "../data/rfDroneProject";
+import "./RfDroneCaseStudy.css";
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { assets } = content;
+const displayTools = project.data.tools.filter((tool) => !project.data.tags.includes(tool));
+---
+
+<article class="rf-case-study">
+  <header class="rf-hero">
+    <div class="site-shell rf-hero__shell">
+      <a href="/projects" class="rf-back-link" aria-label="Back to all projects">
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <div class="rf-hero__copy">
+        <div class="rf-hero__meta">
+          <span class="technical-label">{content.competition}</span>
+          <span class="rf-prototype-label">Concept / first iteration</span>
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="rf-hero__descriptor">{content.descriptor}</p>
+        <p class="rf-hero__opening">{content.opening}</p>
+        <p class="rf-hero__ownership">{content.ownership}</p>
+        <div class="rf-hero__tags" aria-label="Project disciplines and tools">
+          {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+          {displayTools.map((tool) => <span class="pill rf-tool-pill">{tool}</span>)}
+        </div>
+      </div>
+
+      <ProjectFigure asset={assets.pcb} variant="hero" priority={true} />
+
+      <dl class="rf-status-grid" aria-label="Prototype scope">
+        {content.statusItems.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+      </dl>
+
+      <nav class="rf-section-nav" aria-label="Case study sections">
+        {content.sectionLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell rf-case-study__body">
+    <section id="signal-chain" class="rf-section" aria-labelledby="signal-chain-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">01 / Architecture</span>
+          <h2 id="signal-chain-title">RF signal chain</h2>
+        </div>
+        <p>The receiver converts high-frequency energy at the antenna into a practical analog measurement for embedded electronics.</p>
+      </div>
+
+      <EngineeringFlow
+        steps={content.signalChain}
+        label="RF receiver signal chain from U.FL antenna through gain, filtering, logarithmic detection, and the MCU ADC"
+      />
+
+      <div class="rf-copy-grid rf-copy-grid--signal">
+        <div class="rf-readable">
+          {content.signalChainCopy.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+        <aside class="rf-callout">
+          <span class="technical-label">Design choice</span>
+          <h3>{content.logDetectorCallout.title}</h3>
+          <p>{content.logDetectorCallout.body}</p>
+        </aside>
+      </div>
+
+      <dl class="rf-support-strip" aria-label="Supporting receiver circuitry">
+        {content.supportBlocks.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+      </dl>
+    </section>
+
+    <section id="rf-layout" class="rf-section rf-section--accent" aria-labelledby="rf-layout-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">02 / PCB design</span>
+          <h2 id="rf-layout-title">My first RF PCB layout</h2>
+        </div>
+        <p>{content.rfLayout.intro}</p>
+      </div>
+
+      <blockquote class="rf-pullquote">
+        <span class="technical-label">Key learning</span>
+        <p>{content.rfLayout.quote}</p>
+      </blockquote>
+
+      <div class="rf-copy-grid">
+        <p class="rf-readable">{content.rfLayout.detail}</p>
+        <ul class="rf-practice-grid" aria-label="RF layout practices explored in this project">
+          {content.rfLayout.practices.map((practice, index) => (
+            <li><span>{String(index + 1).padStart(2, "0")}</span>{practice}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="front-end" class="rf-section" aria-labelledby="front-end-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">03 / RF front end</span>
+          <h2 id="front-end-title">Antenna and gain stage</h2>
+        </div>
+        <p>{content.frontEnd.intro}</p>
+      </div>
+
+      <div class="rf-media-copy-grid">
+        <ProjectFigure asset={assets.rfFrontEnd} />
+        <div class="rf-readable rf-detail-copy">
+          <p>{content.frontEnd.body}</p>
+          <ul class="rf-detail-list">
+            {content.frontEnd.details.map((detail) => <li>{detail}</li>)}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="detection" class="rf-section" aria-labelledby="detection-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">04 / Analog detection</span>
+          <h2 id="detection-title">Filtering and RF detection</h2>
+        </div>
+        <p>{content.detection.intro}</p>
+      </div>
+
+      <ProjectFigure asset={assets.filteringDetection} />
+      <p class="rf-readable rf-section__closing">{content.detection.body}</p>
+    </section>
+
+    <section id="power" class="rf-section" aria-labelledby="power-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">05 / Power</span>
+          <h2 id="power-title">Power architecture</h2>
+        </div>
+        <p>{content.power.intro}</p>
+      </div>
+
+      <EngineeringFlow
+        steps={content.power.flow}
+        label="Power path from battery input through a 5 volt switching regulator to a 3.3 volt linear regulator"
+        compact={true}
+      />
+
+      <div class="rf-media-copy-grid rf-media-copy-grid--power">
+        <ProjectFigure asset={assets.powerArchitecture} />
+        <aside class="rf-engineering-note">
+          <span class="technical-label">Power integrity note</span>
+          <p>{content.power.note}</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="rf-section" aria-labelledby="embedded-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">06 / Embedded interface</span>
+          <h2 id="embedded-title">MCU, communication, and debug</h2>
+        </div>
+        <p>{content.embedded.intro}</p>
+      </div>
+
+      <div class="rf-media-copy-grid rf-media-copy-grid--embedded">
+        <ProjectFigure asset={assets.digitalInterface} />
+        <aside class="rf-boundary-note">
+          <span class="technical-label">Documented scope</span>
+          <p>{content.embedded.note}</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="pcb" class="rf-section" aria-labelledby="pcb-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">07 / Implementation</span>
+          <h2 id="pcb-title">PCB integration</h2>
+        </div>
+        <p>{content.pcb.intro}</p>
+      </div>
+
+      <ProjectFigure asset={assets.pcb} variant="hero" />
+      <div class="rf-copy-grid rf-pcb-copy">
+        <p class="rf-readable">{content.pcb.body}</p>
+        <ul class="rf-board-blocks" aria-label="Circuits integrated on the PCB">
+          {content.pcb.blocks.map((block) => <li>{block}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section id="lessons" class="rf-section rf-section--lessons" aria-labelledby="lessons-title">
+      <div class="rf-section__heading">
+        <span class="rf-section__index">08 / Reflection</span>
+        <h2 id="lessons-title">Engineering lessons</h2>
+      </div>
+
+      <ol class="rf-lessons-grid">
+        {content.lessons.map((lesson, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{lesson.title}</h3>
+            <p>{lesson.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="rf-reflection">
+        <span class="technical-label">Next engineering step</span>
+        <p>{content.reflection}</p>
+      </div>
+
+      <a href="/projects" class="button-secondary rf-projects-link">Explore more projects <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+
+  <ProjectLightbox />
+</article>

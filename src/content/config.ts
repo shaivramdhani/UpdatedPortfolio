@@ -25,6 +25,7 @@ const projects = defineCollection({
     tools: z.array(z.string()).default([]),
     thumbnail: z.string(),
     heroImage: z.string().optional(),
+    caseStudyLayout: z.enum(["enph253", "rfDrone", "powerboard"]).optional(),
     links: projectLinksSchema
   })
 });

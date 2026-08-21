@@ -1,0 +1,46 @@
+---
+import "./ProjectLightbox.css";
+---
+
+<dialog class="project-lightbox" data-project-lightbox aria-labelledby="project-lightbox-caption">
+  <div class="project-lightbox__panel">
+    <form method="dialog">
+      <button type="submit" class="project-lightbox__close" aria-label="Close expanded image">Close ×</button>
+    </form>
+    <img data-project-lightbox-image src="" alt="" />
+    <p id="project-lightbox-caption" data-project-lightbox-caption></p>
+  </div>
+</dialog>
+
+<script>
+  const lightbox = document.querySelector<HTMLDialogElement>("[data-project-lightbox]");
+  const lightboxImage = lightbox?.querySelector<HTMLImageElement>("[data-project-lightbox-image]");
+  const lightboxCaption = lightbox?.querySelector<HTMLElement>("[data-project-lightbox-caption]");
+  let lastTrigger: HTMLAnchorElement | null = null;
+
+  document.querySelectorAll<HTMLAnchorElement>("[data-project-image-open]").forEach((trigger) => {
+    trigger.addEventListener("click", (event) => {
+      if (!lightbox || !lightboxImage || !lightboxCaption || typeof lightbox.showModal !== "function") {
+        return;
+      }
+
+      event.preventDefault();
+      lastTrigger = trigger;
+      lightboxImage.src = trigger.dataset.projectImageSrc ?? "";
+      lightboxImage.alt = trigger.dataset.projectImageAlt ?? "";
+      lightboxCaption.textContent = trigger.dataset.projectImageCaption ?? "";
+      lightbox.showModal();
+    });
+  });
+
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      lightbox.close();
+    }
+  });
+
+  lightbox?.addEventListener("close", () => {
+    lightboxImage?.removeAttribute("src");
+    lastTrigger?.focus();
+  });
+</script>

@@ -1,0 +1,49 @@
+---
+import { existsSync } from "node:fs";
+import path from "node:path";
+import type { ProjectAsset } from "../data/enph253Project";
+
+type Props = {
+  asset: ProjectAsset;
+  aspect?: "hero" | "landscape" | "square";
+  fit?: "cover" | "contain";
+  priority?: boolean;
+  class?: string;
+};
+
+const { asset, aspect = "landscape", fit = "cover", priority = false, class: className } = Astro.props;
+const publicFile = path.join(process.cwd(), "public", asset.src.replace(/^\/+/, ""));
+const assetExists = existsSync(publicFile);
+---
+
+<figure class:list={["project-media", `project-media--${aspect}`, `project-media--${fit}`, className]}>
+  <div class="project-media__frame">
+    {
+      assetExists && asset.kind === "video" ? (
+        <video class="project-media__asset" controls playsinline preload="metadata" aria-label={asset.alt}>
+          <source src={asset.src} type="video/mp4" />
+          Your browser does not support embedded video.
+        </video>
+      ) : assetExists ? (
+        <img
+          class="project-media__asset"
+          src={asset.src}
+          alt={asset.alt}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchpriority={priority ? "high" : "auto"}
+        />
+      ) : (
+        <div class="project-media__placeholder" role="img" aria-label={`Placeholder: ${asset.label}`}>
+          <span class="project-media__marker" aria-hidden="true">MEDIA / PENDING</span>
+          <div>
+            <p class="project-media__label">{asset.label}</p>
+            <p class="project-media__description">{asset.description}</p>
+          </div>
+          <code>{asset.src}</code>
+        </div>
+      )
+    }
+  </div>
+  {assetExists && asset.caption && <figcaption class="project-media__caption">{asset.caption}</figcaption>}
+</figure>

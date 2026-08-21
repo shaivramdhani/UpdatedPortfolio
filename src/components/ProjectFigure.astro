@@ -1,0 +1,42 @@
+---
+type FigureAsset = {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+};
+
+type Props = {
+  asset: FigureAsset;
+  priority?: boolean;
+  variant?: "default" | "hero";
+  class?: string;
+};
+
+const { asset, priority = false, variant = "default", class: className } = Astro.props;
+---
+
+<figure class:list={["project-figure", `project-figure--${variant}`, className]}>
+  <a
+    class="project-figure__open"
+    href={asset.src}
+    data-project-image-open
+    data-project-image-src={asset.src}
+    data-project-image-alt={asset.alt}
+    data-project-image-caption={asset.caption}
+    aria-label={`Expand image: ${asset.caption}`}
+  >
+    <img
+      src={asset.src}
+      alt={asset.alt}
+      width={asset.width}
+      height={asset.height}
+      loading={priority ? "eager" : "lazy"}
+      decoding="async"
+      fetchpriority={priority ? "high" : "auto"}
+    />
+    <span class="project-figure__expand" aria-hidden="true">Expand ↗</span>
+  </a>
+  <figcaption>{asset.caption}</figcaption>
+</figure>

@@ -1,0 +1,25 @@
+---
+type Props = {
+  steps: readonly string[];
+  label: string;
+  compact?: boolean;
+};
+
+const { steps, label, compact = false } = Astro.props;
+---
+
+<div class:list={["engineering-flow", compact && "engineering-flow--compact"]} role="img" aria-label={label}>
+  {
+    steps.map((step, index) => (
+      <>
+        <div class="engineering-flow__node">{step}</div>
+        {index < steps.length - 1 && (
+          <span class="engineering-flow__arrow" aria-hidden="true">
+            →
+          </span>
+        )}
+      </>
+    ))
+  }
+</div>
+

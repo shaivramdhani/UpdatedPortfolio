@@ -1,6 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import Enph253CaseStudy from "../../components/Enph253CaseStudy.astro";
+import PowerboardCaseStudy from "../../components/PowerboardCaseStudy.astro";
+import RfDroneCaseStudy from "../../components/RfDroneCaseStudy.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -13,6 +16,9 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const usesEnph253Layout = project.data.caseStudyLayout === "enph253";
+const usesRfDroneLayout = project.data.caseStudyLayout === "rfDrone";
+const usesPowerboardLayout = project.data.caseStudyLayout === "powerboard";
 
 const projectLinks = Object.entries(project.data.links ?? {}).flatMap(([label, href]) => {
   if (!href) {
@@ -29,67 +35,71 @@ const projectLinks = Object.entries(project.data.links ?? {}).flatMap(([label, h
 ---
 
 <BaseLayout title={`${project.data.title} | Projects | Shaiv Ramdhani`} description={project.data.summary}>
-  <section class="page-section">
-    <div class="site-shell page-stack">
-      <a href="/projects" class="button-secondary">Back to projects</a>
+  {
+    usesEnph253Layout ? (
+      <Enph253CaseStudy project={project} />
+    ) : usesRfDroneLayout ? (
+      <RfDroneCaseStudy project={project} />
+    ) : usesPowerboardLayout ? (
+      <PowerboardCaseStudy project={project} />
+    ) : (
+      <section class="page-section">
+        <div class="site-shell page-stack">
+          <a href="/projects" class="button-secondary">Back to projects</a>
 
-      <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-        <div class="section-frame space-y-6">
-          <span class="technical-label">{project.data.date}</span>
-          <div class="space-y-4">
-            <h1 class="text-4xl font-semibold tracking-tight text-slate-100 sm:text-5xl">
-              {project.data.title}
-            </h1>
-            <p class="max-w-3xl text-lg leading-8 text-slate-300">{project.data.summary}</p>
-          </div>
-        </div>
-
-        <aside class="surface space-y-6 p-7">
-          <div class="space-y-2">
-            <p class="technical-label !text-[0.68rem]">Role</p>
-            <p class="text-slate-200">{project.data.role}</p>
-          </div>
-          <div class="space-y-3">
-            <p class="technical-label !text-[0.68rem]">Tools</p>
-            <div class="flex flex-wrap gap-2">
-              {project.data.tools.map((tool) => (
-                <span class="pill">{tool}</span>
-              ))}
-            </div>
-          </div>
-          <div class="space-y-3">
-            <p class="technical-label !text-[0.68rem]">Tags</p>
-            <div class="flex flex-wrap gap-2">
-              {project.data.tags.map((tag) => (
-                <span class="pill">{tag}</span>
-              ))}
-            </div>
-          </div>
-          {
-            projectLinks.length > 0 && (
-              <div class="flex flex-wrap gap-3">
-                {projectLinks.map((link) => (
-                  <a href={link.href} class="button-secondary" target="_blank" rel="noreferrer">
-                    {link.label}
-                  </a>
-                ))}
+          <div class="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            <div class="section-frame space-y-6">
+              <span class="technical-label">{project.data.date}</span>
+              <div class="space-y-4">
+                <h1 class="text-4xl font-semibold tracking-tight text-slate-100 sm:text-5xl">
+                  {project.data.title}
+                </h1>
+                <p class="max-w-3xl text-lg leading-8 text-slate-300">{project.data.summary}</p>
               </div>
-            )
-          }
-        </aside>
-      </div>
+            </div>
 
-      <img
-        src={project.data.heroImage ?? project.data.thumbnail}
-        alt={`${project.data.title} hero`}
-        class="surface h-72 w-full object-cover sm:h-96"
-      />
+            <aside class="surface space-y-6 p-7">
+              <div class="space-y-2">
+                <p class="technical-label !text-[0.68rem]">Role</p>
+                <p class="text-slate-200">{project.data.role}</p>
+              </div>
+              <div class="space-y-3">
+                <p class="technical-label !text-[0.68rem]">Tools</p>
+                <div class="flex flex-wrap gap-2">
+                  {project.data.tools.map((tool) => <span class="pill">{tool}</span>)}
+                </div>
+              </div>
+              <div class="space-y-3">
+                <p class="technical-label !text-[0.68rem]">Tags</p>
+                <div class="flex flex-wrap gap-2">
+                  {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+                </div>
+              </div>
+              {projectLinks.length > 0 && (
+                <div class="flex flex-wrap gap-3">
+                  {projectLinks.map((link) => (
+                    <a href={link.href} class="button-secondary" target="_blank" rel="noreferrer">
+                      {link.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </aside>
+          </div>
 
-      <article class="surface p-8 sm:p-10">
-        <div class="prose-content max-w-none">
-          <Content />
+          <img
+            src={project.data.heroImage ?? project.data.thumbnail}
+            alt={`${project.data.title} hero`}
+            class="surface h-72 w-full object-cover sm:h-96"
+          />
+
+          <article class="surface p-8 sm:p-10">
+            <div class="prose-content max-w-none">
+              <Content />
+            </div>
+          </article>
         </div>
-      </article>
-    </div>
-  </section>
+      </section>
+    )
+  }
 </BaseLayout>

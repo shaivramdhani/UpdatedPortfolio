@@ -9,14 +9,14 @@ const pathname = Astro.url.pathname;
     <a href="/" class="font-mono text-sm uppercase tracking-[0.26em] text-slate-100">
       {site.name}
     </a>
-    <nav class="flex flex-wrap items-center justify-end gap-3 sm:gap-4">
+    <nav class="grid min-w-0 flex-1 grid-cols-2 gap-1 sm:flex sm:flex-none sm:flex-wrap sm:items-center sm:justify-end sm:gap-4">
       {site.navigation.map((item) => {
         const active = pathname === item.href;
         return (
           <a
             href={item.href}
             class:list={[
-              "rounded-full border px-3 py-2 text-sm font-medium transition-colors",
+              "rounded-full border px-1 py-2 text-center text-sm font-medium transition-colors sm:px-3",
               active
                 ? "border-accent/30 bg-accent/10 text-accent"
                 : "border-transparent text-slate-300 hover:border-[color:var(--color-line)] hover:bg-white/55 hover:text-slate-100"

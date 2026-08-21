@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-labelledby="title description">
+  <title id="title">Autonomous Mars Habitat Robot project media placeholder</title>
+  <desc id="description">Technical grid with the project title and a clear notice that final robot media is pending.</desc>
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2f8f52" stroke-opacity="0.11" stroke-width="1" />
+    </pattern>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f9fcf7" />
+      <stop offset="1" stop-color="#e6f0e4" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="750" fill="url(#background)" />
+  <rect width="1200" height="750" fill="url(#grid)" />
+  <path d="M0 560h250l42-42h160l52 52h190l42-42h464" fill="none" stroke="#2f8f52" stroke-opacity="0.28" stroke-width="3" />
+  <g fill="#f9fcf7" stroke="#b78f49" stroke-width="3">
+    <circle cx="250" cy="560" r="10" />
+    <circle cx="452" cy="518" r="10" />
+    <circle cx="694" cy="570" r="10" />
+    <circle cx="936" cy="528" r="10" />
+  </g>
+  <rect x="72" y="72" width="220" height="44" rx="22" fill="#ffffff" fill-opacity="0.72" stroke="#b78f49" stroke-opacity="0.42" />
+  <text x="182" y="100" text-anchor="middle" fill="#8b6327" font-family="IBM Plex Mono, monospace" font-size="15" font-weight="700" letter-spacing="2">MEDIA / PENDING</text>
+  <text x="72" y="260" fill="#163223" font-family="Aptos, Segoe UI, sans-serif" font-size="72" font-weight="700" letter-spacing="-3">Autonomous Mars</text>
+  <text x="72" y="344" fill="#163223" font-family="Aptos, Segoe UI, sans-serif" font-size="72" font-weight="700" letter-spacing="-3">Habitat Robot</text>
+  <text x="75" y="405" fill="#2f8f52" font-family="IBM Plex Mono, monospace" font-size="19" font-weight="700" letter-spacing="1.2">PCB DESIGN · POWER ELECTRONICS · MIXED-SIGNAL SENSING</text>
+  <text x="75" y="652" fill="#476550" font-family="IBM Plex Mono, monospace" font-size="17" letter-spacing="1">REPLACE WITH /images/projects/enph-253/robot-hero.webp</text>
+  <rect x="40" y="40" width="1120" height="670" rx="24" fill="none" stroke="#2f8f52" stroke-opacity="0.18" stroke-width="2" stroke-dasharray="8 10" />
+</svg>
+

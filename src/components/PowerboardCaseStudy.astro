@@ -1,0 +1,240 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProjectFigure from "./ProjectFigure.astro";
+import ProjectLightbox from "./ProjectLightbox.astro";
+import { powerboardProject as content } from "../data/powerboardProject";
+import "./RfDroneCaseStudy.css";
+import "./PowerboardCaseStudy.css";
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { assets } = content;
+const displayTools = project.data.tools.filter((tool) => !project.data.tags.includes(tool));
+---
+
+<article class="rf-case-study powerboard-case-study">
+  <header class="rf-hero powerboard-hero">
+    <div class="site-shell rf-hero__shell">
+      <a href="/projects" class="rf-back-link" aria-label="Back to all projects">
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <div class="rf-hero__copy">
+        <div class="rf-hero__meta">
+          <span class="technical-label">{content.organization}</span>
+          <span class="rf-prototype-label">Prototype redesign</span>
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="rf-hero__descriptor">{content.descriptor}</p>
+        <p class="rf-hero__opening">{content.opening}</p>
+        <p class="rf-hero__ownership">{content.ownership}</p>
+        <div class="rf-hero__tags" aria-label="Project disciplines and tools">
+          {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+          {displayTools.map((tool) => <span class="pill rf-tool-pill">{tool}</span>)}
+        </div>
+      </div>
+
+      <ProjectFigure asset={assets.cover} variant="hero" priority={true} />
+
+      <dl class="rf-status-grid" aria-label="Powerboard technical summary">
+        {content.statusItems.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+      </dl>
+
+      <nav class="rf-section-nav" aria-label="Case study sections">
+        {content.sectionLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell rf-case-study__body">
+    <section id="challenge" class="rf-section" aria-labelledby="challenge-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">01 / Context</span>
+          <h2 id="challenge-title">The redesign challenge</h2>
+        </div>
+        <p>{content.challenge.intro}</p>
+      </div>
+
+      <div class="rf-copy-grid">
+        <p class="rf-readable">{content.challenge.body}</p>
+        <ul class="pb-constraint-grid" aria-label="Powerboard redesign constraints">
+          {content.challenge.constraints.map((constraint, index) => (
+            <li><span>{String(index + 1).padStart(2, "0")}</span>{constraint}</li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="architecture" class="rf-section" aria-labelledby="architecture-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">02 / System</span>
+          <h2 id="architecture-title">Mixed-voltage power tree</h2>
+        </div>
+        <p>{content.powerArchitecture.intro}</p>
+      </div>
+
+      <div class="pb-power-tree" role="img" aria-label="Power architecture branching from a 24 volt battery into robot power, isolated high-voltage control, and kick and chip energy storage">
+        <div class="pb-power-tree__source">
+          <span>System source</span>
+          <strong>{content.powerArchitecture.source}</strong>
+        </div>
+        <div class="pb-power-tree__trunk" aria-hidden="true"><span>Power distribution</span></div>
+        <div class="pb-power-tree__branches">
+          {content.powerArchitecture.branches.map((branch) => (
+            <article>
+              <span>{branch.label}</span>
+              <small>{branch.purpose}</small>
+              <ul>{branch.nodes.map((node) => <li>{node}</li>)}</ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="isolation" class="rf-section rf-section--accent" aria-labelledby="isolation-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">03 / Safety boundary</span>
+          <h2 id="isolation-title">Galvanic isolation</h2>
+        </div>
+        <p>{content.isolation.intro}</p>
+      </div>
+
+      <div class="pb-domain-map" aria-label="Low-voltage and high-voltage circuits separated by isolation components">
+        <section>
+          <span>Low-voltage domain</span>
+          <ul>{content.isolation.lowVoltage.map((item) => <li>{item}</li>)}</ul>
+        </section>
+        <section class="pb-domain-map__boundary">
+          <span>Isolation boundary</span>
+          <ul>{content.isolation.boundary.map((item) => <li>{item}</li>)}</ul>
+        </section>
+        <section>
+          <span>High-voltage domain</span>
+          <ul>{content.isolation.highVoltage.map((item) => <li>{item}</li>)}</ul>
+        </section>
+      </div>
+
+      <div class="rf-engineering-note pb-isolation-note">
+        <span class="technical-label">PCB implementation</span>
+        <p>{content.isolation.note}</p>
+      </div>
+    </section>
+
+    <section id="flyback" class="rf-section" aria-labelledby="flyback-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">04 / Power electronics</span>
+          <h2 id="flyback-title">Flyback layout focus</h2>
+        </div>
+        <p>{content.flyback.intro}</p>
+      </div>
+
+      <div class="rf-copy-grid">
+        <p class="rf-readable">{content.flyback.body}</p>
+        <ul class="rf-practice-grid" aria-label="Flyback layout priorities">
+          {content.flyback.priorities.map((priority, index) => (
+            <li><span>{String(index + 1).padStart(2, "0")}</span>{priority}</li>
+          ))}
+        </ul>
+      </div>
+
+      <blockquote class="rf-pullquote pb-flyback-callout">
+        <span class="technical-label">Layout principle</span>
+        <p>{content.flyback.quote}</p>
+      </blockquote>
+    </section>
+
+    <section id="new-circuits" class="rf-section" aria-labelledby="new-circuits-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">05 / Added functionality</span>
+          <h2 id="new-circuits-title">New circuits in the revision</h2>
+        </div>
+        <p>{content.addedCircuitsIntro}</p>
+      </div>
+
+      <div class="pb-feature-grid">
+        {content.addedCircuits.map((feature, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{feature.title}</h3>
+            <p>{feature.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <dl class="pb-interface-strip" aria-label="Board communication and debug interfaces">
+        {content.interfaces.map((item) => <div><dt>{item.signal}</dt><dd>{item.purpose}</dd></div>)}
+      </dl>
+    </section>
+
+    <section id="testability" class="rf-section" aria-labelledby="testability-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">06 / Bring-up</span>
+          <h2 id="testability-title">Designing for testability</h2>
+        </div>
+        <p>{content.testability.intro}</p>
+      </div>
+
+      <div class="pb-test-grid">
+        <section>
+          <span class="technical-label">Access added</span>
+          <ul>{content.testability.improvements.map((improvement) => <li>{improvement}</li>)}</ul>
+        </section>
+        <section>
+          <span class="technical-label">Planned validation sequence</span>
+          <ol>{content.testability.plannedChecks.map((check, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{check}</li>)}</ol>
+        </section>
+      </div>
+    </section>
+
+    <section id="pcb-layout" class="rf-section" aria-labelledby="pcb-layout-title">
+      <div class="rf-section__heading rf-section__heading--split">
+        <div>
+          <span class="rf-section__index">07 / PCB</span>
+          <h2 id="pcb-layout-title">Board implementation</h2>
+        </div>
+        <p>{content.pcb.intro}</p>
+      </div>
+
+      <div class="pb-board-grid">
+        <ProjectFigure asset={assets.front} />
+        <ProjectFigure asset={assets.back} />
+      </div>
+      <p class="rf-readable rf-section__closing">{content.pcb.body}</p>
+    </section>
+
+    <section id="lessons" class="rf-section rf-section--lessons" aria-labelledby="lessons-title">
+      <div class="rf-section__heading">
+        <span class="rf-section__index">08 / Reflection</span>
+        <h2 id="lessons-title">Engineering lessons</h2>
+      </div>
+
+      <ol class="rf-lessons-grid">
+        {content.lessons.map((lesson, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{lesson.title}</h3>
+            <p>{lesson.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="rf-reflection">
+        <span class="technical-label">Prototype outcome</span>
+        <p>{content.outcome}</p>
+      </div>
+
+      <a href="/projects" class="button-secondary rf-projects-link">Explore more projects <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+
+  <ProjectLightbox />
+</article>

@@ -1,0 +1,323 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EngineeringFlow from "./EngineeringFlow.astro";
+import ProjectMedia from "./ProjectMedia.astro";
+import { enph253Project as content } from "../data/enph253Project";
+import "./Enph253CaseStudy.css";
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { assets } = content;
+---
+
+<article class="robot-case-study">
+  <header class="robot-hero">
+    <div class="site-shell robot-hero__shell">
+      <a href="/projects" class="robot-back-link" aria-label="Back to all projects">
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <div class="robot-hero__copy">
+        <div class="robot-hero__meta">
+          <span class="technical-label">{content.course}</span>
+          <span class="robot-team-label">Team project</span>
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="robot-hero__descriptor">{content.descriptor}</p>
+        <p class="robot-hero__opening">{content.opening}</p>
+        <p class="robot-hero__ownership">{content.ownership}</p>
+        <div class="robot-hero__tags" aria-label="Project disciplines and tools">
+          {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+          {project.data.tools.map((tool) => <span class="pill robot-tool-pill">{tool}</span>)}
+        </div>
+      </div>
+
+      <ProjectMedia asset={assets.robotHero} aspect="landscape" fit="contain" priority={true} class="robot-hero__media" />
+
+      <dl class="robot-highlights" aria-label="Technical highlights">
+        {
+          content.highlights.map((highlight) => (
+            <div class="robot-highlight">
+              <dt>{highlight.label}</dt>
+              <dd>{highlight.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <nav class="robot-section-nav" aria-label="Case study sections">
+        {content.sectionLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell robot-case-study__body">
+    <section class="robot-section robot-section--intro" aria-labelledby="challenge-title">
+      <div class="robot-section__heading">
+        <span class="robot-section__index">01 / Context</span>
+        <h2 id="challenge-title">The engineering challenge</h2>
+      </div>
+      <div class="robot-readable">
+        {content.challenge.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <ul class="robot-inline-list" aria-label="Competition tasks">
+          {content.challenge.tasks.map((task) => <li>{task}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <section id="architecture" class="robot-section" aria-labelledby="architecture-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">02 / System</span>
+          <h2 id="architecture-title">Electrical system architecture</h2>
+        </div>
+        <p>{content.architectureCopy.intro}</p>
+      </div>
+
+      <div class="architecture-map" role="img" aria-label="Conceptual robot power architecture branching from protected distribution to actuation, control, and sensing">
+        <div class="architecture-map__group architecture-map__source">
+          <span>{content.architecture.source.label}</span>
+          <div>{content.architecture.source.nodes.map((node) => <p>{node}</p>)}</div>
+        </div>
+        <div class="architecture-map__trunk" aria-hidden="true">
+          <span>Protected power branches</span>
+        </div>
+        <div class="architecture-map__branches">
+          {
+            content.architecture.branches.map((branch) => (
+              <div class="architecture-map__group">
+                <span>{branch.label}</span>
+                <small>{branch.interface}</small>
+                <div>{branch.nodes.map((node) => <p>{node}</p>)}</div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <p class="robot-figure-note">{content.architectureCopy.note}</p>
+
+      <dl class="interface-grid">
+        {content.interfaces.map((item) => <div><dt>{item.signal}</dt><dd>{item.purpose}</dd></div>)}
+      </dl>
+
+      <ProjectMedia asset={assets.motherboardPcb} aspect="hero" fit="contain" class="robot-media-wide" />
+    </section>
+
+    <section id="motor-drive" class="robot-section" aria-labelledby="motor-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">03 / Power electronics</span>
+          <h2 id="motor-title">Custom motor drive electronics</h2>
+        </div>
+        <p>{content.motorDrive.intro}</p>
+      </div>
+
+      <div class="robot-copy-grid">
+        <div class="robot-readable">
+          <p>{content.motorDrive.design}</p>
+          <p>{content.motorDrive.integration}</p>
+        </div>
+        <ul class="robot-topic-list">
+          {content.motorDrive.topics.map((topic) => <li>{topic}</li>)}
+        </ul>
+      </div>
+
+      <div class="robot-media-grid robot-media-grid--two">
+        <ProjectMedia asset={assets.frontMotorDriverPcb} fit="contain" />
+        <ProjectMedia asset={assets.backMotorDriverPcb} fit="contain" />
+      </div>
+    </section>
+
+    <section id="ir-receiver" class="robot-section robot-section--accent" aria-labelledby="ir-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">04 / Mixed-signal sensing</span>
+          <h2 id="ir-title">Modulated IR beacon receiver</h2>
+        </div>
+        <p>{content.irReceiver.intro}</p>
+      </div>
+
+      <EngineeringFlow
+        steps={content.irSignalChain}
+        label="Infrared signal chain from beacon to alignment decision"
+      />
+
+      <div class="robot-copy-grid">
+        <div class="robot-readable">
+          <p>{content.irReceiver.processing}</p>
+          <p>{content.irReceiver.integration}</p>
+        </div>
+        <ul class="robot-topic-list">
+          {content.irReceiver.considerations.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+
+    </section>
+
+    <section id="power-integration" class="robot-section" aria-labelledby="power-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">05 / Integration</span>
+          <h2 id="power-title">Power distribution & mixed-signal integration</h2>
+        </div>
+        <p>{content.powerIntegration.intro}</p>
+      </div>
+
+      <div class="domain-comparison">
+        <div>
+          <span class="domain-comparison__label">Noisy / dynamic loads</span>
+          <ul>{content.powerIntegration.noisyLoads.map((load) => <li>{load}</li>)}</ul>
+        </div>
+        <span class="domain-comparison__divider" aria-hidden="true">beside</span>
+        <div>
+          <span class="domain-comparison__label">Sensitive measurements</span>
+          <ul>{content.powerIntegration.sensitiveSignals.map((signal) => <li>{signal}</li>)}</ul>
+        </div>
+      </div>
+
+      <div class="robot-copy-grid">
+        <ul class="robot-topic-list robot-topic-list--numbered">
+          {content.powerIntegration.practices.map((practice, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{practice}</li>)}
+        </ul>
+        <div class="robot-pullquote">
+          <span class="technical-label">Integration lesson</span>
+          <p>{content.powerIntegration.wiring}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="robot-section" aria-labelledby="stepper-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">06 / Actuation</span>
+          <h2 id="stepper-title">Stepper / linear actuator electronics</h2>
+        </div>
+        <p>{content.stepper.intro}</p>
+      </div>
+
+      <div class="bringup-path">
+        <div>
+          <span>Probe set</span>
+          <ul>{content.stepper.probes.map((probe) => <li>{probe}</li>)}</ul>
+        </div>
+        <div>
+          <span>Measured diagnosis</span>
+          <p>{content.stepper.resolution}</p>
+        </div>
+        <div>
+          <span>System integration</span>
+          <p>{content.stepper.integration}</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="robot-section" aria-labelledby="sensors-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">07 / Embedded interfaces</span>
+          <h2 id="sensors-title">Sensor & embedded integration</h2>
+        </div>
+        <p>{content.sensors.intro}</p>
+      </div>
+
+      <ul class="integration-strip" aria-label="Integrated sensors and interfaces">
+        {content.sensors.integrations.map((integration) => <li>{integration}</li>)}
+      </ul>
+
+      <div class="imu-case robot-readable">
+        <div>
+          <span class="technical-label">{content.sensors.imuTitle}</span>
+          <p>{content.sensors.imu}</p>
+          <p class="imu-case__lesson">{content.sensors.imuLesson}</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="bring-up" class="robot-section" aria-labelledby="bringup-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">08 / Debugging</span>
+          <h2 id="bringup-title">Hardware bring-up & failure analysis</h2>
+        </div>
+        <p>I learned the most when a board did not work immediately. In each case, I used measurements to narrow a system-level symptom into a specific, repairable cause.</p>
+      </div>
+
+      <div class="debug-grid">
+        {
+          content.debugCases.map((debugCase) => (
+            <article class="debug-case">
+              <span class="debug-case__label">{debugCase.label}</span>
+              <h3>{debugCase.title}</h3>
+              <dl>
+                <div><dt>Symptom</dt><dd>{debugCase.symptom}</dd></div>
+                <div><dt>Investigation</dt><dd>{debugCase.investigation}</dd></div>
+                <div><dt>Root cause</dt><dd>{debugCase.rootCause}</dd></div>
+                <div><dt>Fix / outcome</dt><dd>{debugCase.resolution}</dd></div>
+              </dl>
+              <p class="debug-case__lesson">{debugCase.lesson}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="robot-section robot-section--test" aria-labelledby="testability-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">09 / Testability</span>
+          <h2 id="testability-title">Designing for testability</h2>
+        </div>
+        <p>{content.testability.intro}</p>
+      </div>
+      <ul class="tool-strip" aria-label="Bring-up tools and methods">
+        {content.testability.tools.map((tool) => <li>{tool}</li>)}
+      </ul>
+      <p class="robot-readable">{content.testability.telemetry}</p>
+    </section>
+
+    <section class="robot-section" aria-labelledby="integration-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">10 / System</span>
+          <h2 id="integration-title">Final integration</h2>
+        </div>
+        <p>{content.finalIntegration.intro}</p>
+      </div>
+
+      <div class="robot-copy-grid">
+        <ul class="robot-topic-list robot-topic-list--numbered">
+          {content.finalIntegration.changes.map((change, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{change}</li>)}
+        </ul>
+        <p class="robot-readable">{content.finalIntegration.close}</p>
+      </div>
+    </section>
+
+    <section id="result" class="robot-section" aria-labelledby="result-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">11 / Outcome</span>
+          <h2 id="result-title">What I took from it</h2>
+        </div>
+        <p>{content.outcome.intro}</p>
+      </div>
+      <dl class="result-grid">
+        {content.outcome.items.map((item) => <div><dt>{item.title}</dt><dd>{item.body}</dd></div>)}
+      </dl>
+    </section>
+
+    <section class="robot-section robot-section--takeaways" aria-labelledby="takeaways-title">
+      <div class="robot-section__heading">
+        <span class="robot-section__index">12 / Reflection</span>
+        <h2 id="takeaways-title">Key engineering takeaways</h2>
+      </div>
+      <ol class="takeaway-list">
+        {content.takeaways.map((takeaway) => <li><h3>{takeaway.title}</h3><p>{takeaway.body}</p></li>)}
+      </ol>
+      <a href="/projects" class="button-secondary robot-projects-link">Explore more projects <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</article>
