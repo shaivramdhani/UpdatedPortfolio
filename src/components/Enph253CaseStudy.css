@@ -170,8 +170,7 @@
   line-height: 1.2;
 }
 
-.robot-highlight span,
-.measurement-callout dd + span {
+.robot-highlight span {
   display: block;
   margin-top: 0.45rem;
   color: #8c561d;
@@ -267,9 +266,143 @@
   margin-top: 1rem;
 }
 
-.robot-intro-grid,
-.robot-copy-grid,
-.final-integration-grid {
+.mission-brief {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(20rem, 0.7fr);
+  gap: 1.25rem clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.mission-brief__map .project-media__frame {
+  aspect-ratio: 4 / 3;
+  background: #f4f2e9;
+}
+
+.mission-objectives {
+  padding-top: 0.25rem;
+}
+
+.mission-objectives > .technical-label {
+  color: var(--case-green);
+}
+
+.mission-objectives ol {
+  margin-top: 1rem;
+  padding: 0;
+  border-top: 1px solid var(--color-line);
+  list-style: none;
+  counter-reset: mission-objective;
+}
+
+.mission-objectives li {
+  position: relative;
+  padding: 0.95rem 0 0.95rem 2.75rem;
+  border-bottom: 1px solid var(--color-line);
+  counter-increment: mission-objective;
+}
+
+.mission-objectives li::before {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  border: 1px solid rgba(36, 120, 71, 0.25);
+  border-radius: 50%;
+  background: rgba(36, 120, 71, 0.06);
+  color: var(--case-green);
+  content: counter(mission-objective, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 750;
+}
+
+.mission-objectives h3 {
+  color: var(--color-slate-100);
+  font-size: 0.88rem;
+  font-weight: 680;
+  line-height: 1.35;
+}
+
+.mission-objectives p {
+  margin-top: 0.25rem;
+  color: var(--color-slate-400);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.test-run {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 0.58fr);
+  gap: 2rem clamp(2rem, 8vw, 7rem);
+  align-items: center;
+  margin-top: clamp(3.5rem, 8vw, 6.5rem);
+  padding-top: clamp(3.5rem, 8vw, 6.5rem);
+  border-top: 1px solid var(--color-line);
+  scroll-margin-top: 6rem;
+}
+
+.test-run__copy {
+  max-width: 42rem;
+}
+
+.test-run__copy h3 {
+  max-width: 38rem;
+  color: var(--color-slate-100);
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  font-weight: 670;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.test-run__copy > p {
+  max-width: 39rem;
+  margin-top: 1.15rem;
+  color: var(--color-slate-300);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.test-run__copy ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.test-run__copy li {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(36, 120, 71, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.56);
+  color: var(--case-green);
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.035em;
+}
+
+.test-run__media {
+  width: min(100%, 27rem);
+  justify-self: end;
+}
+
+.test-run__media .project-media__frame {
+  aspect-ratio: 9 / 16;
+  border-radius: 1.75rem;
+  background: #d8ddd6;
+}
+
+.test-run__media .project-media__asset {
+  object-fit: cover;
+}
+
+.robot-copy-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(20rem, 1.08fr);
   gap: 2rem clamp(2rem, 6vw, 5rem);
@@ -474,10 +607,6 @@
   aspect-ratio: 4 / 3;
 }
 
-.project-media--square .project-media__frame {
-  aspect-ratio: 1;
-}
-
 .project-media__asset,
 .project-media__placeholder {
   width: 100%;
@@ -601,10 +730,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.robot-media-grid--three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
 .robot-media-wide {
   margin-top: 1rem;
 }
@@ -722,65 +847,6 @@
 .engineering-flow__arrow {
   color: var(--case-copper);
   font-family: var(--font-mono);
-  font-weight: 750;
-}
-
-.measurement-callout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
-  gap: 1.5rem 3rem;
-  align-items: end;
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border: 1px solid rgba(169, 124, 56, 0.24);
-  border-radius: 1.25rem;
-  background: rgba(255, 251, 240, 0.66);
-}
-
-.measurement-callout h3 {
-  margin-top: 0.6rem;
-  color: var(--color-slate-100);
-  font-size: 1.35rem;
-  font-weight: 670;
-}
-
-.measurement-callout p {
-  margin-top: 0.45rem;
-  color: var(--color-slate-400);
-  font-size: 0.82rem;
-  line-height: 1.55;
-}
-
-.measurement-callout dl {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  overflow: hidden;
-  border: 1px solid rgba(169, 124, 56, 0.2);
-  border-radius: 0.9rem;
-  background: rgba(255, 255, 255, 0.66);
-}
-
-.measurement-callout dl > div {
-  padding: 1rem;
-  border-right: 1px solid rgba(169, 124, 56, 0.2);
-}
-
-.measurement-callout dl > div:last-child {
-  border-right: 0;
-}
-
-.measurement-callout dt {
-  min-height: 2.4rem;
-  color: var(--color-slate-400);
-  font-size: 0.68rem;
-  line-height: 1.4;
-}
-
-.measurement-callout dd {
-  margin-top: 0.3rem;
-  color: var(--color-slate-100);
-  font-family: var(--font-mono);
-  font-size: 1.45rem;
   font-weight: 750;
 }
 
@@ -1031,11 +1097,6 @@
   margin-top: 1.5rem;
 }
 
-.final-integration-grid > div:first-child {
-  display: grid;
-  gap: 1.5rem;
-}
-
 .result-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1151,10 +1212,6 @@
     border-bottom: 1px solid var(--color-line);
   }
 
-  .robot-media-grid--three {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .debug-grid {
     grid-template-columns: 1fr;
   }
@@ -1217,10 +1274,9 @@
   }
 
   .robot-section__heading--split,
-  .robot-intro-grid,
   .robot-copy-grid,
-  .final-integration-grid,
-  .measurement-callout,
+  .mission-brief,
+  .test-run,
   .imu-case,
   .robot-section--takeaways {
     grid-template-columns: 1fr;
@@ -1235,8 +1291,16 @@
     max-width: 42rem;
   }
 
-  .robot-media-grid--two,
-  .robot-media-grid--three {
+  .test-run {
+    gap: 2.25rem;
+  }
+
+  .test-run__media {
+    width: min(100%, 24rem);
+    justify-self: center;
+  }
+
+  .robot-media-grid--two {
     grid-template-columns: 1fr;
   }
 
@@ -1364,8 +1428,7 @@
   }
 
   .robot-topic-list,
-  .domain-comparison ul,
-  .measurement-callout dl {
+  .domain-comparison ul {
     grid-template-columns: 1fr;
   }
 
@@ -1377,15 +1440,6 @@
   }
 
   .robot-topic-list li:last-child {
-    border-bottom: 0;
-  }
-
-  .measurement-callout dl > div {
-    border-right: 0;
-    border-bottom: 1px solid rgba(169, 124, 56, 0.2);
-  }
-
-  .measurement-callout dl > div:last-child {
     border-bottom: 0;
   }
 

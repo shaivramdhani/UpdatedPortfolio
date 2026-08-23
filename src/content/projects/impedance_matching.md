@@ -4,9 +4,10 @@ summary: "A starter hands-on measurement project using the Analog Discovery 3 to
 role: "Measurement setup, impedance extraction, data analysis"
 date: "2026-04"
 featured: true
+showOnProjectsPage: false
 tags: ["RF", "Analog Discovery 3","Impedance Measurement","Smith Chart", "Signal Integrity" ]
 tools: ["Analog Discovery 3", "WaveForms", "Python","Network Analyzer"]
-thumbnail: "/images/projects/powerboard/powerboard-front.png"
+thumbnail: "/images/projects/powerboard/powerboard-front.webp"
 links:
   github: ""
   demo: ""

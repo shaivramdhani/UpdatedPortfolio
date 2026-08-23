@@ -21,11 +21,15 @@ const projects = defineCollection({
     role: z.string(),
     date: z.string(),
     featured: z.boolean().default(false),
+    showOnProjectsPage: z.boolean().default(true),
+    projectsPageOrder: z.number().int().positive().optional(),
     tags: z.array(z.string()).default([]),
     tools: z.array(z.string()).default([]),
     thumbnail: z.string(),
+    thumbnailLabel: z.string().optional(),
     heroImage: z.string().optional(),
-    caseStudyLayout: z.enum(["enph253", "rfDrone", "powerboard"]).optional(),
+    status: z.enum(["in-progress"]).optional(),
+    caseStudyLayout: z.enum(["enph253", "rfDrone", "powerboard", "bikeComputer", "motorControl"]).optional(),
     links: projectLinksSchema
   })
 });

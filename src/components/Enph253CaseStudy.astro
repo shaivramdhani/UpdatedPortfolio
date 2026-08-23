@@ -55,16 +55,44 @@ const { assets } = content;
   </header>
 
   <div class="site-shell robot-case-study__body">
-    <section class="robot-section robot-section--intro" aria-labelledby="challenge-title">
-      <div class="robot-section__heading">
-        <span class="robot-section__index">01 / Context</span>
-        <h2 id="challenge-title">The engineering challenge</h2>
+    <section id="mission" class="robot-section robot-section--intro" aria-labelledby="challenge-title">
+      <div class="robot-section__heading robot-section__heading--split">
+        <div>
+          <span class="robot-section__index">01 / Mission context</span>
+          <h2 id="challenge-title">Build a Mars habitat in two minutes</h2>
+        </div>
+        <div class="robot-readable">
+          {content.challenge.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
       </div>
-      <div class="robot-readable">
-        {content.challenge.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
-        <ul class="robot-inline-list" aria-label="Competition tasks">
-          {content.challenge.tasks.map((task) => <li>{task}</li>)}
-        </ul>
+
+      <div class="mission-brief">
+        <ProjectMedia asset={assets.competitionField} aspect="landscape" fit="contain" class="mission-brief__map" />
+        <div class="mission-objectives">
+          <span class="technical-label">Five autonomous objectives</span>
+          <ol>
+            {
+              content.challenge.tasks.map((task) => (
+                <li>
+                  <h3>{task.title}</h3>
+                  <p>{task.body}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <div id="test-run" class="test-run">
+        <div class="test-run__copy">
+          <span class="robot-section__index">Field test / Full run</span>
+          <h3>{content.testRun.title}</h3>
+          <p>{content.testRun.body}</p>
+          <ul aria-label="Test run details">
+            {content.testRun.details.map((detail) => <li>{detail}</li>)}
+          </ul>
+        </div>
+        <ProjectMedia asset={assets.fullRunVideo} fit="contain" class="test-run__media" />
       </div>
     </section>
 

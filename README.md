@@ -54,7 +54,7 @@ date: "2026-03"
 featured: true
 tags: ["Web", "Systems"]
 tools: ["Astro", "TypeScript", "Tailwind"]
-thumbnail: "/project-observability.svg"
+thumbnail: "/images/projects/new-platform/cover.webp"
 links:
   github: "https://github.com/example/repo"
   demo: "https://example.com"
@@ -95,14 +95,9 @@ summary: "Optional one-line summary."
 
 Edit `src/data/site.ts` to update:
 
-- name, title, and headline
-- location and availability
-- short professional summary
-- social links and call-to-action links
-- resume link metadata
-- placeholder banner state
-
-Set `placeholderContent` to `false` when the sample content is fully replaced.
+- name, title, headline, and summary
+- location, email, navigation, and social links
+- SEO and resume metadata
 
 ## Add Or Replace Resume
 
@@ -110,7 +105,6 @@ The contact page reads resume data from `src/data/site.ts`:
 
 - `resume.href`
 - `resume.label`
-- `resume.placeholder`
 
 Current placeholder file:
 
@@ -121,7 +115,6 @@ To switch to your real resume PDF:
 1. Add your file to `public/resume/shaiv-ramdhani-resume.pdf`.
 2. Edit `src/data/site.ts` and set `resume.href` to `"/resume/shaiv-ramdhani-resume.pdf"`.
 3. Update `resume.label` to `Download Resume (PDF)`.
-4. Set `resume.placeholder` to `false`.
 
 ## Development
 

@@ -164,7 +164,7 @@ export const powerboardProject = {
     }
   ],
   outcome:
-    "The redesign produced a prototype-ready board revision with the new feedback, motor-drive, auto-flashing, connector, and test-access changes integrated. The next engineering stage is measured bring-up of the rails, isolation boundary, flyback switching behaviour, and high-voltage feedback—not an assumption that the layout alone guarantees performance.",
+    "The redesign produced a board revision with the new feedback, motor-drive, auto-flashing, connector, and test-access changes integrated. However, after integrating this board into our robot there were errors to be addressed. Next years revision will tackle these.",
   assets: {
     cover: {
       src: `${assetRoot}/powerboard-cover.webp`,

@@ -50,8 +50,8 @@ const contactLinks = [
           <div class="space-y-2">
             <h3 class="text-2xl font-semibold tracking-tight text-slate-100">Shaiv Ramdhani - Resume</h3>
             <p class="text-lg text-slate-300">Engineering Physics Student</p>
-            <p class="text-base text-slate-300">University of British Columbia • Average: 91%</p>
-            <p class="font-mono text-xs uppercase tracking-[0.18em] text-slate-400">Vancouver, BC</p>
+            <p class="text-base text-slate-300">University of British Columbia • Average: 90%</p>
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-slate-400">{site.location}</p>
           </div>
 
           <div class="pt-1">
@@ -62,7 +62,7 @@ const contactLinks = [
               rel="noreferrer"
               download
             >
-              {site.resume.placeholder ? "View Resume (Coming Soon)" : "Download Resume (PDF)"}
+              {site.resume.label}
             </a>
           </div>
         </div>

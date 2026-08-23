@@ -6,10 +6,19 @@ location: "Vancouver, BC"
 featured: true
 summary: "Designed, tested and debugged electronics for fully autonomous soccer playing robots."
 ---
-- Redesigned the power distribution board featuring galvanic isolation between low-voltage (3.3V–24V) and high-voltage (240V) domains, addressing safety, noise coupling, and creepage/clearance constraints
-- Designed motor driver circuitry using low-side MOSFET topology, including flyback protection and switching considerations under inductive loads
-- Developed multi-layer PCB layouts integrating power and communication buses (SPI, I2C, UART), with attention to grounding strategy, return paths, and signal integrity
-- Debugged SPI communication chain (Raspberry Pi → UI board → motor controllers) using oscilloscopes/logic analyzers, identifying and resolving noise and timing-related issues
-- Designed power delivery and decoupling strategies to maintain stable operation under dynamic motor loads
-- Iterated on hardware revisions based on real-world testing, improving reliability of communication and power systems
-- Developed firmware in C for an ESP32 to test and debug high voltage charging and autodischarge
+- Redesigned a 4-layer mixed-voltage PCB for a 24 V autonomous
+    soccer robot, integrating five regulated rails, SPI/I2C/UART
+    interfaces, and galvanic isolation around a 240 V
+    capacitor-charging domain.
+
+-   Designed for board bring-up and validation by adding test points,
+    programming/debug access, and isolated high-voltage feedback, enabling
+    critical power-conversion and control nodes to be measured independently.
+
+- Root-caused intermittent SPI communication faults across a
+    Raspberry Pi-to-motor-controller chain using an oscilloscope and logic
+    analyzer, separating signal-integrity and timing issues from firmware behavior.
+
+ - Developed embedded C firmware to exercise and validate
+    high-voltage charging and automatic-discharge circuitry, using live
+    hardware state during board bring-up to guide PCB debugging and rework.

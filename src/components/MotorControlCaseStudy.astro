@@ -1,0 +1,284 @@
+---
+import type { CollectionEntry } from "astro:content";
+import EngineeringFlow from "./EngineeringFlow.astro";
+import ProjectFigure from "./ProjectFigure.astro";
+import ProjectLightbox from "./ProjectLightbox.astro";
+import { motorControlProject as content } from "../data/motorControlProject";
+import "./MotorControlCaseStudy.css";
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { assets } = content;
+const reportUrl = project.data.links?.article;
+const displayTools = project.data.tools.filter((tool) => !project.data.tags.includes(tool));
+---
+
+<article class="mc-case-study">
+  <header class="mc-hero">
+    <div class="site-shell mc-hero__shell">
+      <a href="/projects" class="mc-back-link" aria-label="Back to all projects">
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <div class="mc-hero__grid">
+        <div class="mc-hero__copy">
+          <div class="mc-hero__meta">
+            <span class="technical-label">{content.eyebrow}</span>
+            <span class="mc-project-label">Individual project</span>
+          </div>
+          <h1>{project.data.title}</h1>
+          <p class="mc-hero__descriptor">{content.descriptor}</p>
+          <p class="mc-hero__opening">{content.opening}</p>
+          <p class="mc-hero__ownership">{content.ownership}</p>
+
+          <div class="mc-hero__actions">
+            {reportUrl && (
+              <a href={reportUrl} class="button-primary" target="_blank" rel="noreferrer">
+                View final lab report <span aria-hidden="true">↗</span>
+              </a>
+            )}
+            <a href="#architecture" class="button-secondary">Explore the signal chain</a>
+          </div>
+
+          <div class="mc-hero__tags" aria-label="Project disciplines and tools">
+            {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+            {displayTools.map((tool) => <span class="pill mc-tool-pill">{tool}</span>)}
+          </div>
+        </div>
+
+        <ProjectFigure asset={assets.circuitPhoto} variant="hero" priority={true} class="mc-hero__figure" />
+      </div>
+
+      <dl class="mc-status-grid" aria-label="Motor controller technical summary">
+        {content.statusItems.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+      </dl>
+
+      <nav class="mc-section-nav" aria-label="Case study sections">
+        {content.sectionLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell mc-case-study__body">
+    <section id="challenge" class="mc-section" aria-labelledby="challenge-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">01 / Engineering challenge</span>
+          <h2 id="challenge-title">Build the feedback loop from first principles</h2>
+        </div>
+        <p>{content.challenge.intro}</p>
+      </div>
+
+      <div class="mc-context-grid">
+        <p class="mc-readable">{content.challenge.detail}</p>
+        <div class="mc-constraint-grid">
+          {content.challenge.constraints.map((constraint, index) => (
+            <article>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{constraint.title}</h3>
+              <p>{constraint.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <ProjectFigure asset={assets.schematic} class="mc-schematic" />
+    </section>
+
+    <section id="architecture" class="mc-section mc-section--accent" aria-labelledby="architecture-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">02 / System architecture</span>
+          <h2 id="architecture-title">A loop across analog and digital domains</h2>
+        </div>
+        <p>{content.architecture.intro}</p>
+      </div>
+
+      <EngineeringFlow
+        steps={content.architecture.signalChain}
+        label="Motor speed control signal chain from the motor and optical sensor through digital measurement, analog feedback, controller, and motor drive"
+      />
+
+      <div class="mc-architecture-grid">
+        {content.architecture.branches.map((branch) => (
+          <article>
+            <span>{branch.label}</span>
+            <p>{branch.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="mc-loop-note">
+        <span class="technical-label">Closing the loop</span>
+        <p>{content.architecture.note}</p>
+      </div>
+    </section>
+
+    <section id="timing" class="mc-section" aria-labelledby="timing-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">03 / Sequential logic</span>
+          <h2 id="timing-title">Latch first. Reset second.</h2>
+        </div>
+        <p>{content.timing.intro}</p>
+      </div>
+
+      <ol class="mc-timing-sequence" aria-label="Measurement timing sequence">
+        {content.timing.sequence.map((item) => (
+          <li>
+            <span>{item.step}</span>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="mc-validation-grid">
+        <dl>
+          {content.timing.measurements.map((measurement) => (
+            <div><dt>{measurement.label}</dt><dd>{measurement.value}</dd></div>
+          ))}
+        </dl>
+        <p>{content.timing.validation}</p>
+      </div>
+
+      <ProjectFigure asset={assets.delayMeasurement} class="mc-scope-figure" />
+    </section>
+
+    <section id="mixed-signal" class="mc-section mc-section--paper" aria-labelledby="mixed-signal-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">04 / Mixed-signal bridge</span>
+          <h2 id="mixed-signal-title">Turning a digital count into feedback voltage</h2>
+        </div>
+        <p>{content.mixedSignal.intro}</p>
+      </div>
+
+      <div class="mc-dac-grid">
+        <div class="mc-equation-card">
+          <span>8-bit R–2R relationship</span>
+          <code>{content.mixedSignal.equation}</code>
+        </div>
+        <div class="mc-dac-validation">
+          <span class="technical-label">Bench validation</span>
+          <h3>{content.mixedSignal.validationTitle}</h3>
+          <p>{content.mixedSignal.validation}</p>
+          <dl>
+            {content.mixedSignal.values.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="controller" class="mc-section" aria-labelledby="controller-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">05 / Analog control</span>
+          <h2 id="controller-title">Making proportional and integral action visible</h2>
+        </div>
+        <p>{content.controller.intro}</p>
+      </div>
+
+      <div class="mc-controller-grid">
+        <div>
+          <div class="mc-equation-card mc-equation-card--controller">
+            <span>Error-amplifier relationship</span>
+            <code>{content.controller.equation}</code>
+          </div>
+          <p class="mc-readable">{content.controller.test}</p>
+          <div class="mc-engineering-note">
+            <span class="technical-label">Observed limitation</span>
+            <p>{content.controller.limitation}</p>
+          </div>
+        </div>
+        <ProjectFigure asset={assets.piResponse} />
+      </div>
+    </section>
+
+    <section id="debugging" class="mc-section mc-section--dark" aria-labelledby="debugging-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">06 / Fault isolation</span>
+          <h2 id="debugging-title">Debugging the interfaces between working blocks</h2>
+        </div>
+        <p>{content.debugging.intro}</p>
+      </div>
+
+      <div class="mc-debug-grid">
+        {content.debugging.cases.map((debugCase, index) => (
+          <article>
+            <span class="mc-debug-grid__index">Case {String(index + 1).padStart(2, "0")}</span>
+            <h3>{debugCase.title}</h3>
+            <dl>
+              <div><dt>Symptom</dt><dd>{debugCase.symptom}</dd></div>
+              <div><dt>Test</dt><dd>{debugCase.investigation}</dd></div>
+              <div><dt>Resolution</dt><dd>{debugCase.outcome}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="results" class="mc-section" aria-labelledby="results-title">
+      <div class="mc-section__heading mc-section__heading--split">
+        <div>
+          <span class="mc-section__index">07 / Measured behavior</span>
+          <h2 id="results-title">Setpoint, count, and estimated speed</h2>
+        </div>
+        <p>{content.results.intro}</p>
+      </div>
+
+      <p class="mc-result-formula">{content.results.formula}</p>
+
+      <div class="mc-results-grid">
+        <div class="mc-results-table-wrap">
+          <table>
+            <caption>Observed setpoint-to-speed relationship</caption>
+            <thead><tr><th>Setpoint</th><th>Latched count</th><th>Estimated speed</th></tr></thead>
+            <tbody>
+              {content.results.samples.map((sample) => (
+                <tr><td>{sample.setpoint}</td><td>{sample.count}</td><td>{sample.speed}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="mc-results-note">
+          <span class="technical-label">How to read the result</span>
+          <p>{content.results.limitation}</p>
+        </div>
+      </div>
+
+      <div class="mc-result-media">
+        <ProjectFigure asset={assets.setpointTracking} />
+        <ProjectFigure asset={assets.latchedCount} />
+      </div>
+    </section>
+
+    <section id="lessons" class="mc-section mc-section--lessons" aria-labelledby="lessons-title">
+      <div class="mc-section__heading">
+        <span class="mc-section__index">08 / Engineering growth</span>
+        <h2 id="lessons-title">What this project changed in my approach</h2>
+      </div>
+
+      <ol class="mc-lessons-grid">
+        {content.lessons.map((lesson) => (
+          <li><h3>{lesson.title}</h3><p>{lesson.body}</p></li>
+        ))}
+      </ol>
+
+      <div class="mc-final-actions">
+        {reportUrl && (
+          <a href={reportUrl} class="button-primary" target="_blank" rel="noreferrer">
+            Read the complete lab submission <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        <a href="/projects" class="button-secondary">Explore more projects</a>
+      </div>
+    </section>
+  </div>
+
+  <ProjectLightbox />
+</article>

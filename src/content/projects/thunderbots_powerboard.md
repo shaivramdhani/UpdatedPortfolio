@@ -4,6 +4,7 @@ summary: "Four-layer mixed-voltage PCB redesign for an autonomous soccer robot, 
 role: "Electrical design, PCB layout, system integration"
 date: "2026-02"
 featured: true
+projectsPageOrder: 2
 tags: ["PCB Design", "Power Electronics", "High Voltage", "Mixed-Signal", "Embedded"]
 tools: ["Altium", "Oscilloscope", "Embedded Debugging"]
 thumbnail: "/images/projects/powerboard/powerboard-cover.webp"

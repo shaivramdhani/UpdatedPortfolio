@@ -4,7 +4,14 @@ import ProjectCard from "../../components/ProjectCard.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const projects = (await getCollection("projects")).sort((a, b) => b.data.date.localeCompare(a.data.date));
+const projects = (await getCollection("projects"))
+  .filter((project) => project.data.showOnProjectsPage)
+  .sort((a, b) => {
+    const orderA = a.data.projectsPageOrder ?? Number.POSITIVE_INFINITY;
+    const orderB = b.data.projectsPageOrder ?? Number.POSITIVE_INFINITY;
+
+    return orderA - orderB || b.data.date.localeCompare(a.data.date);
+  });
 ---
 
 <BaseLayout title="Projects | Shaiv Ramdhani">

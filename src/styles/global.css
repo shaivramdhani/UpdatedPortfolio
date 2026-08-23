@@ -158,16 +158,6 @@
     opacity: 0.6;
   }
 
-  .grid-trace {
-    @apply relative;
-  }
-
-  .grid-trace::before {
-    content: "";
-    @apply pointer-events-none absolute left-0 top-8 bottom-8 w-px;
-    background: linear-gradient(180deg, rgba(183, 143, 73, 0.38), rgba(47, 143, 82, 0.12), transparent);
-  }
-
   .prose-content {
     @apply space-y-5 text-[1.02rem] leading-8 text-slate-200;
   }

@@ -1,0 +1,373 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProjectMedia from "./ProjectMedia.astro";
+import { bikeComputerProject as content } from "../data/bikeComputerProject";
+import "./BikeComputerCaseStudy.css";
+
+type Props = {
+  project: CollectionEntry<"projects">;
+};
+
+const { project } = Astro.props;
+const { assets } = content;
+const displayTools = project.data.tools.filter((tool) => !project.data.tags.includes(tool));
+---
+
+<article class="bike-case-study">
+  <header class="bike-hero">
+    <div class="site-shell bike-hero__shell">
+      <a href="/projects" class="bike-back-link" aria-label="Back to all projects">
+        <span aria-hidden="true">←</span> All projects
+      </a>
+
+      <div class="bike-hero__copy">
+        <div class="bike-hero__meta">
+          <span class="technical-label">{content.eyebrow}</span>
+          <span class="bike-progress-label">In progress</span>
+        </div>
+        <h1>{project.data.title}</h1>
+        <p class="bike-hero__descriptor">{content.descriptor}</p>
+        <p class="bike-hero__opening">{content.opening}</p>
+
+        <div class="bike-current-status">
+          <span class="technical-label">Current status</span>
+          <p>{content.currentStatus}</p>
+        </div>
+
+        <p class="bike-hero__ownership">{content.ownership}</p>
+
+        <div class="bike-hero__tags" aria-label="Project disciplines and tools">
+          {project.data.tags.map((tag) => <span class="pill">{tag}</span>)}
+          {displayTools.map((tool) => <span class="pill bike-tool-pill">{tool}</span>)}
+        </div>
+      </div>
+
+      <ProjectMedia asset={assets.systemOverview} aspect="hero" fit="contain" priority={true} class="bike-hero__media" />
+
+      <dl class="bike-status-grid" aria-label="Current project scope">
+        {content.statusItems.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+      </dl>
+
+      <ul class="bike-takeaway-strip" aria-label="Primary engineering focus">
+        {content.takeaways.map((item) => <li>{item}</li>)}
+      </ul>
+
+      <nav class="bike-section-nav" aria-label="Case study sections">
+        {content.sectionLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      </nav>
+    </div>
+  </header>
+
+  <div class="site-shell bike-case-study__body">
+    <section id="goals" class="bike-section" aria-labelledby="goals-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">01 / Product scope</span>
+          <h2 id="goals-title">A focused embedded V1</h2>
+        </div>
+        <p>{content.goals.intro}</p>
+      </div>
+
+      <div class="bike-goals-grid">
+        <section>
+          <span class="technical-label">Planned V1 functionality</span>
+          <ul class="bike-check-grid">
+            {content.goals.v1.map((goal) => <li>{goal}</li>)}
+          </ul>
+        </section>
+        <aside>
+          <div>
+            <span class="technical-label">Stretch function</span>
+            <p>{content.goals.stretch}</p>
+          </div>
+          <div>
+            <span class="technical-label">Intentionally outside V1</span>
+            <ul>{content.goals.excluded.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        </aside>
+      </div>
+
+      <blockquote class="bike-pullquote">
+        <span class="technical-label">Scope principle</span>
+        <p>{content.goals.scopeNote}</p>
+      </blockquote>
+    </section>
+
+    <section id="architecture" class="bike-section bike-section--accent" aria-labelledby="architecture-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">02 / System architecture</span>
+          <h2 id="architecture-title">Power, compute, sensing & storage</h2>
+        </div>
+        <p>The design separates energy management from the 3.3 V embedded domain and the boosted display rail, then gives each peripheral an interface chosen for its actual bandwidth and debug needs.</p>
+      </div>
+
+      <div
+        class="bike-architecture"
+        role="img"
+        aria-label="Planned bike computer architecture from USB-C and battery power through charger and power rails to the NINA-B306 controller, GNSS, barometer, flash, memory LCD, buttons, battery monitoring, debug, and USB"
+      >
+        <div class="bike-architecture__source">
+          {content.architecture.source.map((node, index) => (
+            <>
+              <div class="bike-architecture__node"><small>{index === 0 ? "Input" : index === 1 ? "Front end" : "Charge + load"}</small><strong>{node}</strong></div>
+              {index < content.architecture.source.length - 1 && <span aria-hidden="true">→</span>}
+            </>
+          ))}
+        </div>
+
+        <div class="bike-architecture__battery">
+          <span>Energy storage</span>
+          <strong>{content.architecture.battery}</strong>
+          <small>Battery ↔ power path</small>
+        </div>
+
+        <div class="bike-architecture__rails">
+          {content.architecture.rails.map((rail) => (
+            <article>
+              <span>{rail.voltage}</span>
+              <strong>{rail.label}</strong>
+              <small>{rail.detail}</small>
+            </article>
+          ))}
+        </div>
+
+        <div class="bike-architecture__controller">
+          <span>Main controller</span>
+          <strong>{content.architecture.controller.title}</strong>
+          <small>{content.architecture.controller.detail}</small>
+        </div>
+
+        <div class="bike-architecture__peripherals">
+          {content.architecture.peripherals.map((peripheral) => (
+            <article>
+              <span>{peripheral.bus}</span>
+              <strong>{peripheral.part}</strong>
+              <small>{peripheral.purpose}</small>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <dl class="bike-support-grid" aria-label="Controller support and debug signals">
+        {content.architecture.support.map((item) => <div><dt>{item.signal}</dt><dd>{item.purpose}</dd></div>)}
+      </dl>
+      <p class="bike-figure-note">{content.architecture.note}</p>
+    </section>
+
+    <section id="hardware" class="bike-section" aria-labelledby="hardware-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">03 / Hardware decisions</span>
+          <h2 id="hardware-title">Selection rationale, not just a BOM</h2>
+        </div>
+        <p>Each part and interface was selected to reduce a specific system risk: RF implementation, outdoor readability, power, pin count, routing, bring-up, or data integrity.</p>
+      </div>
+
+      <div class="bike-decision-list">
+        {content.hardwareDecisions.map((decision, index) => (
+          <article class="bike-decision-card">
+            <div class="bike-decision-card__title">
+              <span>{String(index + 1).padStart(2, "0")} · {decision.category}</span>
+              <p>{decision.part}</p>
+              <h3>{decision.title}</h3>
+            </div>
+            <div class="bike-decision-card__body">
+              <p>{decision.body}</p>
+              <ul>{decision.points.map((point) => <li>{point}</li>)}</ul>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="bike-media-grid bike-media-grid--three">
+        <ProjectMedia asset={assets.mcuSchematic} fit="contain" />
+        <ProjectMedia asset={assets.gnssSchematic} fit="contain" />
+        <ProjectMedia asset={assets.lcdSchematic} fit="contain" />
+      </div>
+    </section>
+
+    <section id="power" class="bike-section bike-section--accent" aria-labelledby="power-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">04 / Power architecture</span>
+          <h2 id="power-title">Designing around a real battery discharge curve</h2>
+        </div>
+        <p>{content.power.intro}</p>
+      </div>
+
+      <div class="bike-power-grid">
+        <ul class="bike-numbered-list" aria-label="Power architecture elements">
+          {content.power.details.map((detail, index) => <li><span>{String(index + 1).padStart(2, "0")}</span>{detail}</li>)}
+        </ul>
+        <div class="bike-power-copy">
+          <div class="bike-engineering-note">
+            <span class="technical-label">Why buck-boost?</span>
+            <p>{content.power.regulatorReason}</p>
+          </div>
+          <div class="bike-open-item">
+            <span class="technical-label">Open component selection</span>
+            <p>{content.power.selectionNote}</p>
+          </div>
+        </div>
+      </div>
+
+      <ProjectMedia asset={assets.powerSchematic} aspect="hero" fit="contain" class="bike-media-wide" />
+
+      <div class="bike-subsection-heading">
+        <span class="technical-label">Estimates before fabrication</span>
+        <h3>Pre-hardware power budget</h3>
+      </div>
+
+      <div class="bike-budget-layout">
+        <div class="bike-table-wrap">
+          <table class="bike-data-table">
+            <caption class="sr-only">Estimated current by operating mode before hardware fabrication</caption>
+            <thead><tr><th>Mode</th><th>Estimated current</th></tr></thead>
+            <tbody>
+              {content.powerBudget.rows.map((row) => <tr><td>{row.mode}</td><td>{row.current}</td></tr>)}
+            </tbody>
+          </table>
+        </div>
+        <dl class="bike-target-grid" aria-label="Power design targets">
+          {content.powerBudget.targets.map((target) => <div><dt>{target.label}</dt><dd>{target.value}</dd></div>)}
+        </dl>
+      </div>
+
+      <div class="bike-budget-warning">
+        <span>Estimate ≠ measurement</span>
+        <p>{content.powerBudget.caveat}</p>
+      </div>
+    </section>
+
+    <section id="requirements" class="bike-section" aria-labelledby="requirements-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">05 / Embedded architecture</span>
+          <h2 id="requirements-title">Interfaces with a reason</h2>
+        </div>
+        <p>The design uses multiple buses because the peripherals have different bandwidth, pin-count, power, boot-state, and debugging needs—not because one interface is universally best.</p>
+      </div>
+
+      <div class="bike-interface-grid">
+        {content.interfaces.map((item) => (
+          <article>
+            <span>{item.signal}</span>
+            <h3>{item.destination}</h3>
+            <p>{item.rationale}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="bike-requirements-heading">
+        <div>
+          <span class="technical-label">Defined before the board exists</span>
+          <h3>Testable system requirements</h3>
+        </div>
+        <p>Every number below is a target with a planned validation method. None is presented as achieved, measured, or verified.</p>
+      </div>
+
+      <div class="bike-table-wrap bike-table-wrap--requirements">
+        <table class="bike-data-table bike-data-table--requirements">
+          <caption class="sr-only">Bike computer targets and planned validation methods</caption>
+          <thead><tr><th>Area</th><th>Current target</th><th>Planned validation</th></tr></thead>
+          <tbody>
+            {content.requirements.map((item) => <tr><td>{item.area}</td><td>{item.target}</td><td>{item.validation}</td></tr>)}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="bring-up" class="bike-section bike-section--accent" aria-labelledby="bringup-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">06 / Testability</span>
+          <h2 id="bringup-title">Designing revision one to be diagnosable</h2>
+        </div>
+        <p>{content.bringup.intro}</p>
+      </div>
+
+      <div class="bike-bringup-grid">
+        {content.bringup.groups.map((group, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{group.title}</h3>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="progress" class="bike-section" aria-labelledby="progress-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">07 / Current status</span>
+          <h2 id="progress-title">What is designed, open, and next</h2>
+        </div>
+        <p>No arbitrary completion percentage: the useful distinction is between architecture already defined, schematic details currently being closed, and work that depends on a fabricated board.</p>
+      </div>
+
+      <div class="bike-progress-grid">
+        {content.progress.map((stage, index) => (
+          <section class:list={[index === 1 && "bike-progress-grid__active"]}>
+            <div><span>{String(index + 1).padStart(2, "0")}</span><h3>{stage.state}</h3></div>
+            <ul>{stage.items.map((item) => <li>{item}</li>)}</ul>
+          </section>
+        ))}
+      </div>
+
+      <div class="bike-media-grid bike-media-grid--two">
+        <ProjectMedia asset={assets.pcbLayout} fit="contain" />
+        <ProjectMedia asset={assets.bringupPhoto} fit="contain" />
+      </div>
+    </section>
+
+    <section id="validation" class="bike-section bike-section--accent" aria-labelledby="validation-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">08 / Planned validation</span>
+          <h2 id="validation-title">Measurements to make after fabrication</h2>
+        </div>
+        <p>There are no physical results yet. This plan turns the requirements into bench and field checks to run only after assembly and staged bring-up.</p>
+      </div>
+
+      <div class="bike-validation-grid">
+        {content.validation.map((group) => (
+          <article>
+            <h3>{group.area}</h3>
+            <ul>{group.items.map((item) => <li>{item}</li>)}</ul>
+          </article>
+        ))}
+      </div>
+
+      <ProjectMedia asset={assets.validationPlots} aspect="hero" fit="contain" class="bike-media-wide" />
+    </section>
+
+    <section class="bike-section bike-section--lessons" aria-labelledby="lessons-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">09 / Engineering decisions</span>
+          <h2 id="lessons-title">Interview-sized design conversations</h2>
+        </div>
+        <p>The most valuable learning is in the tradeoffs: what to specify, what to simplify, what to expose for debug, and what evidence will be needed before calling the design successful.</p>
+      </div>
+
+      <ol class="bike-lessons-grid">
+        {content.lessons.map((lesson, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{lesson.title}</h3>
+            <p>{lesson.body}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="bike-final-note">
+        <span class="technical-label">Evidence still to come</span>
+        <p>{content.finalNote}</p>
+      </div>
+
+      <a href="/projects" class="button-secondary bike-projects-link">Explore more projects <span aria-hidden="true">→</span></a>
+    </section>
+  </div>
+</article>

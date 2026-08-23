@@ -1,4 +1,6 @@
 ---
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
@@ -6,19 +8,44 @@ type Props = {
 };
 
 const { project } = Astro.props;
+const publicThumbnail = path.join(process.cwd(), "public", project.data.thumbnail.replace(/^\/+/, ""));
+const thumbnailExists = existsSync(publicThumbnail);
 ---
 
 <article class="surface flex h-full flex-col overflow-hidden">
-  <img
-    src={project.data.thumbnail}
-    alt={`${project.data.title} thumbnail`}
-    class="h-48 w-full border-b border-[color:var(--color-line)] object-cover"
-    loading="lazy"
-  />
+  {
+    thumbnailExists ? (
+      <img
+        src={project.data.thumbnail}
+        alt={`${project.data.title} thumbnail`}
+        class="h-48 w-full border-b border-[color:var(--color-line)] object-cover"
+        loading="lazy"
+      />
+    ) : (
+      <div
+        class="relative flex h-48 w-full items-end overflow-hidden border-b border-[color:var(--color-line)] bg-[#e8f1e6] p-6"
+        role="img"
+        aria-label={`Placeholder: ${project.data.thumbnailLabel ?? `${project.data.title} project image`}`}
+      >
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(47,143,82,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,143,82,0.08)_1px,transparent_1px)] bg-[size:26px_26px]"></div>
+        <div class="relative max-w-xs">
+          <span class="font-mono text-[0.62rem] font-bold uppercase tracking-[0.16em] text-accent">Media / pending</span>
+          <p class="mt-2 text-sm font-semibold leading-5 text-slate-200">
+            {project.data.thumbnailLabel ?? `${project.data.title} project image`}
+          </p>
+        </div>
+      </div>
+    )
+  }
   <div class="flex flex-1 flex-col gap-5 p-6">
     <div class="space-y-3">
       <div class="flex flex-wrap items-center gap-3 text-sm text-slate-400">
         <span class="technical-label !text-[0.68rem]">{project.data.date}</span>
+        {project.data.status === "in-progress" && (
+          <span class="rounded-full border border-[#a97c38]/30 bg-[#fffaf0]/80 px-2.5 py-1 font-mono text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[#805d24]">
+            In progress
+          </span>
+        )}
         <span class="font-mono uppercase tracking-[0.16em]">{project.data.role}</span>
       </div>
       <h3 class="text-xl font-semibold text-slate-100">{project.data.title}</h3>

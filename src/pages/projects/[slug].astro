@@ -2,8 +2,10 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Enph253CaseStudy from "../../components/Enph253CaseStudy.astro";
+import BikeComputerCaseStudy from "../../components/BikeComputerCaseStudy.astro";
 import PowerboardCaseStudy from "../../components/PowerboardCaseStudy.astro";
 import RfDroneCaseStudy from "../../components/RfDroneCaseStudy.astro";
+import MotorControlCaseStudy from "../../components/MotorControlCaseStudy.astro";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -17,8 +19,10 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 const usesEnph253Layout = project.data.caseStudyLayout === "enph253";
+const usesBikeComputerLayout = project.data.caseStudyLayout === "bikeComputer";
 const usesRfDroneLayout = project.data.caseStudyLayout === "rfDrone";
 const usesPowerboardLayout = project.data.caseStudyLayout === "powerboard";
+const usesMotorControlLayout = project.data.caseStudyLayout === "motorControl";
 
 const projectLinks = Object.entries(project.data.links ?? {}).flatMap(([label, href]) => {
   if (!href) {
@@ -38,10 +42,14 @@ const projectLinks = Object.entries(project.data.links ?? {}).flatMap(([label, h
   {
     usesEnph253Layout ? (
       <Enph253CaseStudy project={project} />
+    ) : usesBikeComputerLayout ? (
+      <BikeComputerCaseStudy project={project} />
     ) : usesRfDroneLayout ? (
       <RfDroneCaseStudy project={project} />
     ) : usesPowerboardLayout ? (
       <PowerboardCaseStudy project={project} />
+    ) : usesMotorControlLayout ? (
+      <MotorControlCaseStudy project={project} />
     ) : (
       <section class="page-section">
         <div class="site-shell page-stack">

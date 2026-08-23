@@ -5,6 +5,7 @@ export type ProjectAsset = {
   description: string;
   alt: string;
   caption?: string;
+  poster?: string;
 };
 
 const assetRoot = "/images/projects/enph-253";
@@ -25,6 +26,8 @@ export const enph253Project = {
     { value: "I2C + UART", label: "Embedded interfaces" }
   ],
   sectionLinks: [
+    { href: "#mission", label: "Mission" },
+    { href: "#test-run", label: "Test run" },
     { href: "#architecture", label: "Architecture" },
     { href: "#motor-drive", label: "Motor drive" },
     { href: "#ir-receiver", label: "IR receiver" },
@@ -34,10 +37,37 @@ export const enph253Project = {
   ],
   challenge: {
     paragraphs: [
-      "The course challenge was to build a fully autonomous, battery-powered rover for an approximately 8 ft × 8 ft field with ramps, uneven transitions, and several manipulation tasks.",
-      "We used a mecanum-drive chassis so the robot could navigate the field, align itself with sensors, find a solar panel from a modulated IR beacon, remove its cover, move tower pieces, and interact with the habitat. My job was to make the electrical pieces behave as one system while the robot was moving, vibrating, and drawing rapidly changing current."
+      "The course challenge was to build a fully autonomous, battery-powered rover for a two-minute mission on an approximately 8 ft × 8 ft field. Starting from one corner, the robot had to cross ramps and uneven terrain before completing a mix of navigation, object-handling, and construction tasks.",
+      "The mission combined five distinct objectives: reach the habitat site, assemble a habitat, build a radio mast, uncover a solar panel, and collect mineral samples. That variety drove our mecanum chassis and multi-actuator design. My job was to make the electrical pieces behave as one system while the rover was moving, vibrating, and drawing rapidly changing current."
     ],
-    tasks: ["Modulated-beacon alignment", "Protective-cover removal", "Tower-component handling", "Habitat interaction"]
+    tasks: [
+      {
+        title: "Traverse rough terrain",
+        body: "Leave the start zone and cross ramps and uneven transitions to reach the habitat site."
+      },
+      {
+        title: "Assemble the habitat",
+        body: "Position and assemble pre-made modules inside the designated colony building area."
+      },
+      {
+        title: "Build the radio tower",
+        body: "Handle and nest the mast segments together inside the tower build area."
+      },
+      {
+        title: "Activate the solar array",
+        body: "Find the solar panel using its modulated IR beacon, then remove the protective cover."
+      },
+      {
+        title: "Collect mineral samples",
+        body: "Search the field for mineral targets and retrieve them for future manufacturing."
+      }
+    ]
+  },
+  testRun: {
+    title: "A full-system test on the physical course",
+    body:
+      "This two-minute recording puts the electrical work in context. Away from the bench, locomotion, sensing, communication, power delivery, and mechanism timing all had to hold together as one autonomous system.",
+    details: ["≈ 2 minute run", "Physical course", "Integrated hardware"]
   },
   architectureCopy: {
     intro:
@@ -252,12 +282,21 @@ export const enph253Project = {
       caption: "Integrated rover — the custom electronics, mecanum drivetrain, vertical mechanism, sensors, and wiring installed on the final platform."
     },
     competitionField: {
-      src: `${assetRoot}/competition-field.webp`,
+      src: `${assetRoot}/competition-field.svg`,
       kind: "image",
-      label: "Competition field diagram",
-      description: "Course layout showing the rover's autonomous tasks and obstacles.",
-      alt: "ENPH 253 competition field and task layout",
-      caption: "Competition field — the rover had to navigate the course and complete several habitat-building tasks autonomously."
+      label: "Mars habitat mission field",
+      description: "Simplified field plan showing terrain, task stations, obstacles, and mineral samples.",
+      alt: "Simplified top-down plan of the Mars habitat challenge field, showing the start zone, rough terrain, solar panel, radio tower, habitat area, mineral samples, and obstacles",
+      caption: "Mission field, redrawn from the course map — a compact terrain and manipulation challenge; schematic only and not to scale."
+    },
+    fullRunVideo: {
+      src: `${assetRoot}/robot-full-run.mp4`,
+      kind: "video",
+      label: "Full rover test run",
+      description: "Two-minute test run of the integrated rover on the physical course.",
+      alt: "Full test run of the autonomous Mars habitat rover operating on the physical course",
+      caption: "Full test run — the integrated autonomous rover operating on the physical course.",
+      poster: `${assetRoot}/robot-full-run-poster.webp`
     },
     motherboardPcb: {
       src: `${assetRoot}/motherboard-pcb.webp`,
