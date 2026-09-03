@@ -1,41 +1,31 @@
-export type BikeProjectAsset = {
-  src: string;
-  alt: string;
-  label: string;
-  description: string;
-  caption?: string;
-  kind: "image" | "video";
-};
-
-const assetRoot = "/images/projects/bike-computer";
-
 export const bikeComputerProject = {
   eyebrow: "Independent hardware project · 2026",
   descriptor:
-    "Designing a rechargeable custom PCB for GNSS ride logging, outdoor data display, low-power operation, onboard storage, and BLE connectivity.",
+    "A routed, rechargeable custom PCB for GNSS ride logging, outdoor data display, onboard storage, BLE connectivity, and explicit low-power operation.",
   opening:
-    "I am designing a custom bike computer around a single-cell Li-ion battery, an nRF52840-based MCU/BLE module, GNSS, barometric altitude sensing, SPI flash, and a reflective memory LCD. The goal is to take the embedded system from schematic through PCB bring-up and firmware while treating battery life, RF integration, testability, and data integrity as first-class design constraints.",
+    "I designed and routed a custom bike computer around a single-cell Li-ion battery, an nRF52840-based MCU/BLE module, GNSS, barometric altitude sensing, SPI flash, and a reflective memory LCD. The project has moved from architecture and schematic capture through PCB layout and is now in hardware bring-up and subsystem testing, with battery life, RF integration, testability, and data integrity treated as first-class constraints.",
   currentStatus:
-    "Schematic finalization. Major subsystems are designed, and I am completing MCU integration, physical controls, battery monitoring, debug access, and bring-up test points before beginning PCB layout.",
+    "PCB design and routing are complete. I am now in the testing phase: bringing up the power rails and programming interface first, then checking the GNSS, barometer, flash, display, controls, and BLE path before field validation.",
   ownership:
-    "Current work covers product-level requirements, system architecture, component and interface selection, schematic capture, power budgeting, and validation planning. PCB fabrication, firmware completion, and measured performance are future stages.",
+    "I own the product requirements, system architecture, component and interface selection, schematic capture, power budgeting, PCB floorplanning and routing, design-for-test decisions, bring-up, and validation planning. Firmware integration and measured power and field performance remain in progress.",
   statusItems: [
-    { label: "Project stage", value: "Schematic finalization" },
-    { label: "Hardware scope", value: "Custom battery-powered PCB" },
-    { label: "Next gate", value: "Schematic review + ERC" }
+    { label: "Project stage", value: "Board bring-up + testing" },
+    { label: "PCB status", value: "Layout and routing complete" },
+    { label: "Current gate", value: "Power + interface validation" }
   ],
   takeaways: [
     "Power-path charging",
     "Low-IQ regulation",
     "GNSS + BLE integration",
     "Multi-bus architecture",
-    "RF-aware placement",
+    "RF-aware PCB layout",
     "Designed-for-debug bring-up"
   ],
   sectionLinks: [
     { href: "#goals", label: "Goals" },
     { href: "#architecture", label: "Architecture" },
     { href: "#hardware", label: "Hardware" },
+    { href: "#layout", label: "PCB layout" },
     { href: "#power", label: "Power" },
     { href: "#requirements", label: "Requirements" },
     { href: "#bring-up", label: "Bring-up" },
@@ -70,12 +60,12 @@ export const bikeComputerProject = {
       {
         voltage: "3.3 V",
         label: "Low-power system rail",
-        detail: "Buck-boost architecture under final part review"
+        detail: "Regulated rail for the MCU, GNSS, barometer, and flash"
       },
       {
         voltage: "5 V",
         label: "Dedicated display rail",
-        detail: "Boost architecture; final device not yet committed"
+        detail: "Boosted rail dedicated to the memory LCD"
       }
     ],
     controller: {
@@ -93,11 +83,11 @@ export const bikeComputerProject = {
       { signal: "ADC", purpose: "Switched battery-voltage divider" },
       { signal: "SWD", purpose: "Programming, reset, and debug" },
       { signal: "Status", purpose: "Charger CHG / PGOOD inputs" },
-      { signal: "USB", purpose: "D+ / D− retained pending final scope decision" },
-      { signal: "Test", purpose: "Power rails and useful communication nodes" }
+      { signal: "USB", purpose: "D+ / D− routed between the connector and MCU" },
+      { signal: "Test", purpose: "Power rails and key communication nodes" }
     ],
     note:
-      "This is the intended architecture at schematic finalization. It documents design direction, not implemented firmware or a validated PCB."
+      "This simplified block diagram reflects the completed PCB architecture. It intentionally omits component-level schematic detail; subsystem operation and performance are still being validated."
   },
   hardwareDecisions: [
     {
@@ -108,8 +98,8 @@ export const bikeComputerProject = {
         "The NINA-B306 combines an nRF52840 Cortex-M4F platform, BLE radio, and antenna in one module. That reduces first-revision RF risk compared with implementing a discrete 2.4 GHz antenna and matching network.",
       points: [
         "MCU and BLE share one qualified module",
-        "Antenna keepout and edge placement still constrain PCB floorplanning",
-        "SWDIO, SWDCLK, reset, 3.3 V, and ground are being exposed for bring-up",
+        "The module was placed at the board edge with its antenna keepout protected from copper and nearby components",
+        "SWDIO, SWDCLK, reset, 3.3 V, and ground are exposed for bring-up",
         "Focused RF projects can cover antenna design without making this board depend on a first discrete 2.4 GHz implementation"
       ]
     },
@@ -121,8 +111,8 @@ export const bikeComputerProject = {
         "UART was selected for a direct bring-up and debug path. V1 does not need every optional interface, and backup-supply support remains an evaluated option rather than an automatic addition.",
       points: [
         "Integrated GNSS antenna reduces external RF circuitry",
-        "Module antenna and ground-plane guidance will drive early floorplanning",
-        "UART test access is planned before layout",
+        "Module antenna and ground-plane guidance drove its board-edge floorplanning",
+        "UART test access was retained in the routed design",
         "Optional features are included only when they justify their power and routing cost"
       ]
     },
@@ -136,7 +126,7 @@ export const bikeComputerProject = {
         "SPI-style serial interface",
         "MCU GPIO provides EXTCOMIN polarity switching",
         "Dedicated display power rail",
-        "FPC connector integrated at the board boundary"
+        "FPC connector placed at the board boundary to simplify the display connection"
       ]
     },
     {
@@ -149,7 +139,7 @@ export const bikeComputerProject = {
         "I²C selected instead of unnecessary SPI bandwidth",
         "Local decoupling and bus pull-ups included in the schematic",
         "Preserves pins for display, storage, controls, and debug",
-        "Enclosure and layout must expose the pressure port to ambient air"
+        "The pressure-port area was kept clear so the enclosure can expose it to ambient air"
       ]
     },
     {
@@ -166,6 +156,52 @@ export const bikeComputerProject = {
       ]
     }
   ],
+  layout: {
+    intro:
+      "Once the schematic was complete, I treated placement and routing as part of the electrical design rather than a mechanical cleanup step. The board was floorplanned around the two antenna modules, the charger and regulator current loops, connector access, sensor constraints, and a bring-up sequence that would still work if one subsystem failed.",
+    decisions: [
+      {
+        title: "RF-aware floorplanning",
+        body:
+          "The BLE and GNSS modules were placed at board edges and their antenna regions were kept free of copper, routing, and tall components. Noisy power circuitry and high-activity digital nets were kept away from those regions."
+      },
+      {
+        title: "Compact power paths",
+        body:
+          "USB input protection, charging, battery, and regulation were grouped to keep the important current loops short. Power traces were sized for their loads, with local input and output capacitors placed close to the devices they support."
+      },
+      {
+        title: "Continuous return paths",
+        body:
+          "Signal routing was planned over solid ground wherever possible so return currents do not have to cross plane gaps. Vias tie the ground regions together and provide short returns near layer transitions and decoupling components."
+      },
+      {
+        title: "Interface-first routing",
+        body:
+          "USB D+ and D− were routed together, while SPI clocks and other timing-sensitive paths were kept direct. Lower-speed I²C, UART, button, and status nets were routed after the constrained power, RF, and clock paths."
+      },
+      {
+        title: "Mechanical placement",
+        body:
+          "USB-C, the memory-LCD connector, battery connection, buttons, and debug access were positioned around how the assembled device will be reached and tested. The barometer pressure port was given a clear path to ambient air."
+      },
+      {
+        title: "Designed for bring-up",
+        body:
+          "Programming, reset, ground, rail, charger-status, and communication access points were preserved after routing. This supports staged testing instead of requiring the full board to work before any diagnosis is possible."
+      }
+    ],
+    routingOrder: [
+      "Lock connectors, antennas, and mechanical constraints",
+      "Place regulators and local decoupling around short current loops",
+      "Protect antenna keepouts and ground continuity",
+      "Route power, USB, clocks, and critical buses first",
+      "Complete low-speed control and status routing",
+      "Add test access, ground stitching, and run final design-rule checks"
+    ],
+    outcome:
+      "The completed layout is now the hardware under test. Performance claims remain open until rail behavior, programming, peripheral communication, current consumption, and RF/GNSS operation have been measured."
+  },
   power: {
     intro:
       "Power architecture is a primary design constraint, not a support circuit added after the digital design. USB-C feeds protected 5 V input power into a BQ24074 charger with power-path management, allowing the system load and battery charge path to be treated explicitly.",
@@ -181,8 +217,8 @@ export const bikeComputerProject = {
     ],
     regulatorReason:
       "A Li-ion cell moves above and below the 3.3 V system rail as it discharges, so a buck-boost topology is attractive. The selection priority is low quiescent current across real operating modes—not output-current capability the board does not need.",
-    selectionNote:
-      "The final 3.3 V regulator and 5 V boost device are not named here because schematic finalization has not yet established both choices. The architecture and selection criteria are defined; final part commitment is still open."
+    implementationNote:
+      "The selected regulators and their required passives were placed as compact functional groups. Input and output capacitors sit close to their pins, and the current-carrying paths were routed before lower-priority digital signals so the power layout was not forced through leftover space."
   },
   powerBudget: {
     rows: [
@@ -199,7 +235,7 @@ export const bikeComputerProject = {
       { label: "Measured ride battery life", value: "≥12 hours" }
     ],
     caveat:
-      "All values above are pre-hardware estimates, not measurements. The budget is a design tool rather than a post-build calculation. The preliminary 2–3 mA idle estimate currently exceeds the <2 mA target, creating a concrete optimization problem for hardware and firmware bring-up."
+      "These values are design estimates and targets, not published measurements. They defined the hardware and firmware test cases now being run. The preliminary 2–3 mA idle estimate exceeds the <2 mA target, so idle-state optimization remains a specific bring-up task."
   },
   interfaces: [
     { signal: "UART", destination: "SAM-M10Q GNSS", rationale: "Simple bring-up and readable debug path" },
@@ -228,7 +264,7 @@ export const bikeComputerProject = {
   ],
   bringup: {
     intro:
-      "A major focus before layout is making the first PCB revision diagnosable. Beyond connecting the functional blocks, I am adding programming access, rail test points, communication test points, battery telemetry, and defined boot states so failures can be isolated during bring-up.",
+      "The completed PCB was designed to make revision-one failures diagnosable. Programming access, rail and communication test points, battery telemetry, and defined boot states let me bring up one domain at a time and isolate faults without depending on the entire system working.",
     groups: [
       {
         title: "Program + control",
@@ -240,47 +276,47 @@ export const bikeComputerProject = {
       },
       {
         title: "Interface access",
-        items: ["GNSS UART", "Useful SPI nodes", "Useful I²C nodes", "USB D+ / D− decision", "Physical control inputs", "Accessible ground points"]
+        items: ["GNSS UART", "Useful SPI nodes", "Useful I²C nodes", "USB D+ / D−", "Physical control inputs", "Accessible ground points"]
       },
       {
-        title: "Layout constraints",
-        items: ["Local decoupling", "USB protection", "BLE antenna keepout", "GNSS ground guidance", "Short power loops", "Pressure-port exposure"]
+        title: "Board-level checks",
+        items: ["Local decoupling", "USB protection", "BLE antenna keepout", "GNSS ground guidance", "Short power loops", "Pressure-port clearance"]
       }
     ]
   },
   progress: [
     {
-      state: "Completed / largely designed",
+      state: "Design complete",
       items: [
         "Overall system architecture and V1 requirements",
         "Preliminary mode-based power budget",
-        "USB-C charging and power-path architecture",
-        "3.3 V and display power architecture",
-        "Memory LCD, barometer, SPI flash, and GNSS schematics",
-        "Major component selection"
+        "Full subsystem schematics and component selection",
+        "PCB floorplanning and component placement",
+        "Power, USB, communication, and control routing",
+        "Antenna keepouts, test access, and design-rule review"
       ]
     },
     {
-      state: "Currently finalizing",
+      state: "Testing now",
       items: [
-        "NINA-B306 MCU integration and physical buttons",
-        "Power-button and off-state behavior",
-        "Battery-voltage ADC measurement",
-        "Charger status connections",
-        "SWD interface and test points",
-        "Final USB functionality",
-        "Schematic review and ERC"
+        "Visual inspection and rail checks",
+        "SWD programming and reset behavior",
+        "Charging, power-path, and battery monitoring",
+        "GNSS UART and barometer I²C communication",
+        "SPI flash and memory-LCD interfaces",
+        "Buttons, charger status, and BLE connectivity",
+        "Mode-by-mode current measurement"
       ]
     },
     {
       state: "Next",
       items: [
-        "PCB floorplanning and RF module placement",
-        "Power layout, routing, and DRC review",
-        "Fabrication and assembly",
-        "Staged power and interface bring-up",
-        "Peripheral firmware, logging, and BLE transfer",
-        "Field testing and measured current characterization"
+        "Close issues found during subsystem testing",
+        "Integrate ride logging and display firmware",
+        "Validate storage integrity and BLE transfer",
+        "Run GNSS and altitude comparisons on reference routes",
+        "Measure sleep, idle, ride, and transfer current",
+        "Complete controlled runtime and field testing"
       ]
     }
   ],
@@ -329,7 +365,7 @@ export const bikeComputerProject = {
     },
     {
       title: "Integrated RF still shapes layout",
-      body: "Plan module edge placement, antenna keepouts, ground guidance, and nearby circuitry before dense routing begins."
+      body: "Resolve module edge placement, antenna keepouts, ground guidance, and nearby circuitry before dense routing begins."
     },
     {
       title: "First revisions need observability",
@@ -345,63 +381,5 @@ export const bikeComputerProject = {
     }
   ],
   finalNote:
-    "The next meaningful proof points are a reviewed schematic, a layout that respects the power and antenna constraints, and a staged bring-up plan. Results will be added only after the board exists and the measurements have been performed.",
-  assets: {
-    systemOverview: {
-      kind: "image",
-      src: `${assetRoot}/system-overview.webp`,
-      alt: "Planned bike computer system architecture or future PCB render",
-      label: "Bike computer block diagram / schematic overview / future PCB render",
-      description: "Replace with the project-level architecture graphic or an honest PCB render after layout is complete."
-    },
-    powerSchematic: {
-      kind: "image",
-      src: `${assetRoot}/power-architecture.webp`,
-      alt: "USB-C charging and power regulation schematic",
-      label: "USB-C + charger + regulator schematic",
-      description: "Export the reviewed USB-C, BQ24074, 3.3 V, and display-rail schematic here."
-    },
-    lcdSchematic: {
-      kind: "image",
-      src: `${assetRoot}/memory-lcd-schematic.webp`,
-      alt: "LS027B7DH01 memory LCD interface schematic",
-      label: "Memory LCD schematic",
-      description: "Add the display connector, serial interface, EXTCOMIN, and power-rail schematic view."
-    },
-    gnssSchematic: {
-      kind: "image",
-      src: `${assetRoot}/gnss-schematic-placement.webp`,
-      alt: "SAM-M10Q GNSS schematic and planned PCB placement",
-      label: "SAM-M10Q schematic and eventual PCB placement",
-      description: "Replace with the reviewed GNSS sheet, then add the antenna-aware layout view."
-    },
-    mcuSchematic: {
-      kind: "image",
-      src: `${assetRoot}/nina-b306-schematic.webp`,
-      alt: "NINA-B306 MCU and debug interface schematic",
-      label: "NINA-B306 schematic",
-      description: "Add the completed MCU, SWD, status, control, and optional USB connections."
-    },
-    pcbLayout: {
-      kind: "image",
-      src: `${assetRoot}/pcb-layout.webp`,
-      alt: "Bike computer PCB layout",
-      label: "PCB layout — add after layout is complete",
-      description: "Reserved for the real top and bottom layout once placement and routing are complete."
-    },
-    bringupPhoto: {
-      kind: "image",
-      src: `${assetRoot}/bench-bringup.webp`,
-      alt: "Assembled bike computer PCB during bench bring-up",
-      label: "Assembled PCB / bench bring-up photo",
-      description: "Reserved for a real assembly and staged power-up photo after fabrication."
-    },
-    validationPlots: {
-      kind: "image",
-      src: `${assetRoot}/validation-plots.webp`,
-      alt: "Bike computer power and ride-comparison measurements",
-      label: "Power measurements / ride comparison plots",
-      description: "Reserved for measured current profiles, GNSS comparisons, and runtime results."
-    }
-  }
+    "The schematic and routed PCB are complete; the evidence still being developed is measured behavior. I am now testing power, programming, peripheral interfaces, current consumption, storage integrity, BLE transfer, and field performance before presenting any target as achieved."
 } as const;

@@ -1,6 +1,5 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import ProjectMedia from "./ProjectMedia.astro";
 import { bikeComputerProject as content } from "../data/bikeComputerProject";
 import "./BikeComputerCaseStudy.css";
 
@@ -9,7 +8,6 @@ type Props = {
 };
 
 const { project } = Astro.props;
-const { assets } = content;
 const displayTools = project.data.tools.filter((tool) => !project.data.tags.includes(tool));
 ---
 
@@ -41,8 +39,6 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
           {displayTools.map((tool) => <span class="pill bike-tool-pill">{tool}</span>)}
         </div>
       </div>
-
-      <ProjectMedia asset={assets.systemOverview} aspect="hero" fit="contain" priority={true} class="bike-hero__media" />
 
       <dl class="bike-status-grid" aria-label="Current project scope">
         {content.statusItems.map((item) => <div><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
@@ -105,7 +101,7 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
       <div
         class="bike-architecture"
         role="img"
-        aria-label="Planned bike computer architecture from USB-C and battery power through charger and power rails to the NINA-B306 controller, GNSS, barometer, flash, memory LCD, buttons, battery monitoring, debug, and USB"
+        aria-label="Bike computer architecture from USB-C and battery power through the charger and power rails to the NINA-B306 controller, GNSS, barometer, flash, memory LCD, buttons, battery monitoring, debug, and USB"
       >
         <div class="bike-architecture__source">
           {content.architecture.source.map((node, index) => (
@@ -180,17 +176,49 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
         ))}
       </div>
 
-      <div class="bike-media-grid bike-media-grid--three">
-        <ProjectMedia asset={assets.mcuSchematic} fit="contain" />
-        <ProjectMedia asset={assets.gnssSchematic} fit="contain" />
-        <ProjectMedia asset={assets.lcdSchematic} fit="contain" />
+    </section>
+
+    <section id="layout" class="bike-section bike-section--accent" aria-labelledby="layout-title">
+      <div class="bike-section__heading bike-section__heading--split">
+        <div>
+          <span class="bike-section__index">04 / PCB layout</span>
+          <h2 id="layout-title">Routing the board around its constraints</h2>
+        </div>
+        <p>{content.layout.intro}</p>
+      </div>
+
+      <div class="bike-layout-grid">
+        {content.layout.decisions.map((decision, index) => (
+          <article>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <h3>{decision.title}</h3>
+            <p>{decision.body}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="bike-routing-flow">
+        <div>
+          <span class="technical-label">Routing sequence</span>
+          <h3>Constraints first, low-speed nets last</h3>
+        </div>
+        <ol>
+          {content.layout.routingOrder.map((step, index) => (
+            <li><span>{String(index + 1).padStart(2, "0")}</span><p>{step}</p></li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="bike-layout-outcome">
+        <span class="technical-label">Where the design stands</span>
+        <p>{content.layout.outcome}</p>
       </div>
     </section>
 
-    <section id="power" class="bike-section bike-section--accent" aria-labelledby="power-title">
+    <section id="power" class="bike-section" aria-labelledby="power-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">04 / Power architecture</span>
+          <span class="bike-section__index">05 / Power architecture</span>
           <h2 id="power-title">Designing around a real battery discharge curve</h2>
         </div>
         <p>{content.power.intro}</p>
@@ -206,23 +234,21 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
             <p>{content.power.regulatorReason}</p>
           </div>
           <div class="bike-open-item">
-            <span class="technical-label">Open component selection</span>
-            <p>{content.power.selectionNote}</p>
+            <span class="technical-label">Layout implementation</span>
+            <p>{content.power.implementationNote}</p>
           </div>
         </div>
       </div>
 
-      <ProjectMedia asset={assets.powerSchematic} aspect="hero" fit="contain" class="bike-media-wide" />
-
       <div class="bike-subsection-heading">
-        <span class="technical-label">Estimates before fabrication</span>
-        <h3>Pre-hardware power budget</h3>
+        <span class="technical-label">Targets under test</span>
+        <h3>Mode-based power budget</h3>
       </div>
 
       <div class="bike-budget-layout">
         <div class="bike-table-wrap">
           <table class="bike-data-table">
-            <caption class="sr-only">Estimated current by operating mode before hardware fabrication</caption>
+            <caption class="sr-only">Estimated current by bike computer operating mode</caption>
             <thead><tr><th>Mode</th><th>Estimated current</th></tr></thead>
             <tbody>
               {content.powerBudget.rows.map((row) => <tr><td>{row.mode}</td><td>{row.current}</td></tr>)}
@@ -243,7 +269,7 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
     <section id="requirements" class="bike-section" aria-labelledby="requirements-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">05 / Embedded architecture</span>
+          <span class="bike-section__index">06 / Embedded architecture</span>
           <h2 id="requirements-title">Interfaces with a reason</h2>
         </div>
         <p>The design uses multiple buses because the peripherals have different bandwidth, pin-count, power, boot-state, and debugging needs—not because one interface is universally best.</p>
@@ -261,10 +287,10 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
 
       <div class="bike-requirements-heading">
         <div>
-          <span class="technical-label">Defined before the board exists</span>
+          <span class="technical-label">Defined before testing</span>
           <h3>Testable system requirements</h3>
         </div>
-        <p>Every number below is a target with a planned validation method. None is presented as achieved, measured, or verified.</p>
+        <p>Every number below is a target with a validation method. Testing is underway, but none is presented as achieved until the corresponding measurement is complete.</p>
       </div>
 
       <div class="bike-table-wrap bike-table-wrap--requirements">
@@ -281,7 +307,7 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
     <section id="bring-up" class="bike-section bike-section--accent" aria-labelledby="bringup-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">06 / Testability</span>
+          <span class="bike-section__index">07 / Testability</span>
           <h2 id="bringup-title">Designing revision one to be diagnosable</h2>
         </div>
         <p>{content.bringup.intro}</p>
@@ -301,10 +327,10 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
     <section id="progress" class="bike-section" aria-labelledby="progress-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">07 / Current status</span>
-          <h2 id="progress-title">What is designed, open, and next</h2>
+          <span class="bike-section__index">08 / Current status</span>
+          <h2 id="progress-title">From completed layout to measured behavior</h2>
         </div>
-        <p>No arbitrary completion percentage: the useful distinction is between architecture already defined, schematic details currently being closed, and work that depends on a fabricated board.</p>
+        <p>No arbitrary completion percentage: the useful distinction is between design work that is complete, the board-level checks currently underway, and system validation that depends on stable hardware and firmware.</p>
       </div>
 
       <div class="bike-progress-grid">
@@ -316,19 +342,15 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
         ))}
       </div>
 
-      <div class="bike-media-grid bike-media-grid--two">
-        <ProjectMedia asset={assets.pcbLayout} fit="contain" />
-        <ProjectMedia asset={assets.bringupPhoto} fit="contain" />
-      </div>
     </section>
 
     <section id="validation" class="bike-section bike-section--accent" aria-labelledby="validation-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">08 / Planned validation</span>
-          <h2 id="validation-title">Measurements to make after fabrication</h2>
+          <span class="bike-section__index">09 / Active validation</span>
+          <h2 id="validation-title">Turning targets into measurements</h2>
         </div>
-        <p>There are no physical results yet. This plan turns the requirements into bench and field checks to run only after assembly and staged bring-up.</p>
+        <p>The PCB is in testing now. These bench and field checks are the evidence required before the current estimates and functional targets can be reported as verified results.</p>
       </div>
 
       <div class="bike-validation-grid">
@@ -340,13 +362,12 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
         ))}
       </div>
 
-      <ProjectMedia asset={assets.validationPlots} aspect="hero" fit="contain" class="bike-media-wide" />
     </section>
 
     <section class="bike-section bike-section--lessons" aria-labelledby="lessons-title">
       <div class="bike-section__heading bike-section__heading--split">
         <div>
-          <span class="bike-section__index">09 / Engineering decisions</span>
+          <span class="bike-section__index">10 / Engineering decisions</span>
           <h2 id="lessons-title">Interview-sized design conversations</h2>
         </div>
         <p>The most valuable learning is in the tradeoffs: what to specify, what to simplify, what to expose for debug, and what evidence will be needed before calling the design successful.</p>
@@ -363,7 +384,7 @@ const displayTools = project.data.tools.filter((tool) => !project.data.tags.incl
       </ol>
 
       <div class="bike-final-note">
-        <span class="technical-label">Evidence still to come</span>
+        <span class="technical-label">Testing in progress</span>
         <p>{content.finalNote}</p>
       </div>
 

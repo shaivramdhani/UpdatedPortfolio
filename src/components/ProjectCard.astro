@@ -14,27 +14,13 @@ const thumbnailExists = existsSync(publicThumbnail);
 
 <article class="surface flex h-full flex-col overflow-hidden">
   {
-    thumbnailExists ? (
+    thumbnailExists && (
       <img
         src={project.data.thumbnail}
         alt={`${project.data.title} thumbnail`}
         class="h-48 w-full border-b border-[color:var(--color-line)] object-cover"
         loading="lazy"
       />
-    ) : (
-      <div
-        class="relative flex h-48 w-full items-end overflow-hidden border-b border-[color:var(--color-line)] bg-[#e8f1e6] p-6"
-        role="img"
-        aria-label={`Placeholder: ${project.data.thumbnailLabel ?? `${project.data.title} project image`}`}
-      >
-        <div class="absolute inset-0 bg-[linear-gradient(rgba(47,143,82,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(47,143,82,0.08)_1px,transparent_1px)] bg-[size:26px_26px]"></div>
-        <div class="relative max-w-xs">
-          <span class="font-mono text-[0.62rem] font-bold uppercase tracking-[0.16em] text-accent">Media / pending</span>
-          <p class="mt-2 text-sm font-semibold leading-5 text-slate-200">
-            {project.data.thumbnailLabel ?? `${project.data.title} project image`}
-          </p>
-        </div>
-      </div>
     )
   }
   <div class="flex flex-1 flex-col gap-5 p-6">
